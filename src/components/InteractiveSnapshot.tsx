@@ -27,13 +27,13 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
   ];
 
   const researchTasks = [
-    "Researching Google Business Profile...",
-    "Checking Website...",
-    "Checking Google Reviews...",
-    "Finding Instagram...",
-    "Checking Facebook...",
-    "Checking Online Booking...",
-    "Preparing Business Snapshot..."
+    "Researching Google Business Profile",
+    "Checking Official Website",
+    "Reading Google Reviews",
+    "Finding Instagram",
+    "Checking Facebook",
+    "Looking for Online Booking",
+    "Preparing Business Snapshot"
   ];
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
         })
       });
 
-      if (!response.ok) throw new Error("Failed to fetch data");
+      if (!response.ok) throw new Error("Failed to fetch data from API");
       
       const data = await response.json();
       
@@ -80,9 +80,32 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
       }, 8500);
 
     } catch (err: any) {
-      console.error(err);
-      setError("An error occurred while researching. Please try again.");
-      setIsSearching(false);
+      // 7. Only display technical errors in the browser console.
+      // Never expose internal application errors to customers.
+      console.error("[AI Research] Failed to retrieve public data:", err);
+      
+      // Generate fallback data to ensure the journey continues
+      const fallbackData = {
+        snapshot: {
+          businessName: formData.businessName,
+          category: formData.category,
+          location: formData.location,
+          googleRating: "Not Found",
+          reviewCount: "Not Found",
+          websiteFound: "Not Found",
+          instagramFound: "Not Found",
+          facebookFound: "Not Found",
+          onlineBooking: "Not Found",
+          whatsApp: "Not Found",
+          businessHours: "Not Found",
+          isFallback: true
+        }
+      };
+
+      // Wait for animation to finish then continue
+      setTimeout(() => {
+        onComplete(fallbackData);
+      }, 8500);
     }
   };
 

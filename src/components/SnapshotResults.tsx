@@ -58,6 +58,16 @@ export default function SnapshotResults({ snapshot, recommendations, onContinue 
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0B1F3A] tracking-tight">
               Business Snapshot
             </h2>
+            
+            {snapshot.isFallback && (
+              <div className="max-w-2xl mx-auto mt-6 bg-slate-50 border-2 border-slate-100 rounded-2xl p-6">
+                <p className="text-slate-600 font-bold">
+                  No public information was found for this business.
+                  <br/>
+                  You can still continue with a manual consultation.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
