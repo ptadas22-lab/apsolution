@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, BarChart2, PieChart, Activity } from "lucide-react";
+import { ArrowRight, Search, BarChart2, Lightbulb } from "lucide-react";
 
 interface HeroProps {
   onScrollToSection: (sectionId: string) => void;
@@ -9,19 +9,19 @@ export default function Hero({ onScrollToSection }: HeroProps) {
   return (
     <section 
       id="hero" 
-      className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center py-20 bg-white"
+      className="flex flex-col items-center justify-center pt-24 pb-16 bg-white"
     >
-      <div className="max-w-3xl w-full text-center space-y-6 flex flex-col items-center px-4">
+      <div className="max-w-3xl w-full text-center space-y-5 flex flex-col items-center px-4">
         
         <h1 className="text-4xl md:text-5xl font-semibold text-[#111111] tracking-tight">
-          👋 Welcome to A&P Solutions
+          Welcome to A&P Solutions
         </h1>
         
         <p className="text-lg md:text-xl text-[#666666] font-normal">
           Understand your business before making changes.
         </p>
         
-        <div className="pt-8">
+        <div className="pt-4">
           <button
             id="hero-primary-btn"
             onClick={() => onScrollToSection("industries")}
@@ -33,36 +33,27 @@ export default function Hero({ onScrollToSection }: HeroProps) {
         </div>
       </div>
 
-      {/* Subtle Business Illustration */}
-      <div className="w-full max-w-4xl mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 px-4 opacity-90">
-        <div className="bg-[#F9F9F9] rounded-[24px] p-8 flex flex-col items-center text-center gap-4 border border-[#F0F0F0] hover:border-[#E5E5E5] transition-colors">
-           <div className="bg-white p-3 rounded-2xl shadow-sm border border-[#F0F0F0]">
-             <BarChart2 className="h-6 w-6 text-[#111111] stroke-[1.5]" />
+      {/* 3-Step Process */}
+      <div className="w-full max-w-3xl mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+        <div className="flex flex-col items-center text-center gap-3">
+           <div className="bg-[#F9F9F9] p-4 rounded-2xl border border-[#F0F0F0]">
+             <Search className="h-6 w-6 text-[#111111] stroke-[1.5]" />
            </div>
-           <div className="w-full flex flex-col items-center mt-2">
-             <div className="h-3 w-24 bg-[#E5E5E5] rounded-full mb-3"></div>
-             <div className="h-2 w-32 bg-[#F0F0F0] rounded-full"></div>
-           </div>
+           <span className="text-sm font-medium text-[#111111]">We Research</span>
         </div>
         
-        <div className="bg-[#F9F9F9] rounded-[24px] p-8 flex flex-col items-center text-center gap-4 border border-[#F0F0F0] hover:border-[#E5E5E5] transition-colors">
-           <div className="bg-white p-3 rounded-2xl shadow-sm border border-[#F0F0F0]">
-             <PieChart className="h-6 w-6 text-[#111111] stroke-[1.5]" />
+        <div className="flex flex-col items-center text-center gap-3">
+           <div className="bg-[#F9F9F9] p-4 rounded-2xl border border-[#F0F0F0]">
+             <BarChart2 className="h-6 w-6 text-[#111111] stroke-[1.5]" />
            </div>
-           <div className="w-full flex flex-col items-center mt-2">
-             <div className="h-3 w-20 bg-[#E5E5E5] rounded-full mb-3"></div>
-             <div className="h-2 w-28 bg-[#F0F0F0] rounded-full"></div>
-           </div>
+           <span className="text-sm font-medium text-[#111111]">We Prepare Your Business Snapshot</span>
         </div>
 
-        <div className="bg-[#F9F9F9] rounded-[24px] p-8 flex flex-col items-center text-center gap-4 border border-[#F0F0F0] hover:border-[#E5E5E5] transition-colors">
-           <div className="bg-white p-3 rounded-2xl shadow-sm border border-[#F0F0F0]">
-             <Activity className="h-6 w-6 text-[#111111] stroke-[1.5]" />
+        <div className="flex flex-col items-center text-center gap-3">
+           <div className="bg-[#F9F9F9] p-4 rounded-2xl border border-[#F0F0F0]">
+             <Lightbulb className="h-6 w-6 text-[#111111] stroke-[1.5]" />
            </div>
-           <div className="w-full flex flex-col items-center mt-2">
-             <div className="h-3 w-28 bg-[#E5E5E5] rounded-full mb-3"></div>
-             <div className="h-2 w-24 bg-[#F0F0F0] rounded-full"></div>
-           </div>
+           <span className="text-sm font-medium text-[#111111]">We Recommend Practical Ideas</span>
         </div>
       </div>
     </section>
