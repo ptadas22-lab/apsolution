@@ -90,7 +90,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!businessName.trim() || !location.trim()) return;
+    if (!businessName.trim()) return;
 
     setStep(3);
     setError("");
@@ -101,7 +101,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           businessName,
-          location,
+          location: "Mumbai, India",
           category: selectedIndustryLabel
         })
       });
@@ -335,56 +335,47 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
           id="snapshot-form" 
           className="py-16 md:py-24 border-b border-slate-100 scroll-mt-20 text-center"
         >
-          <div className="max-w-md mx-auto space-y-8">
-            <div className="space-y-3">
+          <div className="max-w-3xl mx-auto space-y-12">
+            <div className="space-y-4">
               <button 
                 onClick={() => setStep(1)}
-                className="inline-flex items-center gap-1 text-slate-450 hover:text-[#2563EB] text-[10.5px] font-bold font-mono uppercase bg-transparent border-0 cursor-pointer"
+                className="inline-flex items-center gap-1 text-slate-450 hover:text-[#2563EB] text-[10.5px] font-bold font-mono uppercase bg-transparent border-0 cursor-pointer mb-4"
               >
                 <ArrowLeft className="h-3 w-3" />
-                <span>Back to Industry: {selectedIndustryLabel}</span>
+                <span>Back</span>
               </button>
               
-              <h2 className="text-2xl sm:text-4xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                A Few Brief Details
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
+                What is your business name?
               </h2>
-              <p className="text-slate-500 text-xs sm:text-sm font-semibold leading-relaxed">
-                We'll assemble local public data & research with similar companies to map your snapshot.
-              </p>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-100 text-left space-y-5">
-              <div className="space-y-1.5">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block font-mono">Business Name</label>
+            <form onSubmit={handleFormSubmit} className="max-w-2xl mx-auto space-y-8">
+              <div>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. The Urban Oasis Salon"
+                  placeholder="Sameera's Family Salon"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full bg-transparent border-b-2 border-slate-200 focus:border-[#2563EB] text-center px-4 py-4 text-2xl sm:text-4xl font-bold focus:outline-none transition-colors placeholder:text-slate-300 text-[#0B1F3A]"
                 />
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block font-mono">Business Location</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Bandra, Mumbai"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
+              <p className="text-slate-500 text-sm font-semibold">
+                We'll use publicly available information to prepare your Business Snapshot.
+              </p>
 
-              <button
-                type="submit"
-                className="w-full bg-[#0B1F3A] hover:bg-slate-800 active:scale-95 text-white font-bold text-xs py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2"
-              >
-                <span>Generate Snapshot</span>
-                <ArrowRight className="h-4 w-4" />
-              </button>
+              <div className="pt-4 flex justify-center">
+                <button
+                  type="submit"
+                  disabled={!businessName.trim()}
+                  className="bg-[#2563EB] disabled:bg-slate-300 hover:bg-blue-700 text-white font-bold text-base sm:text-lg px-12 py-5 rounded-2xl transition-all shadow-md inline-flex items-center gap-2 cursor-pointer border-0"
+                >
+                  <span>Continue</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
 
               {error && <p className="text-red-500 text-[11px] font-semibold text-center mt-2">{error}</p>}
             </form>
