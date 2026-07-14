@@ -6,7 +6,10 @@ import {
   LineChart, 
   ShieldCheck, 
   Star,
-  Sparkles
+  Sparkles,
+  FileText,
+  BarChart3,
+  ArrowUpRight
 } from "lucide-react";
 
 interface ImagineBusinessProps {
@@ -17,25 +20,30 @@ export default function ImagineBusiness({ onScrollToSection }: ImagineBusinessPr
   return (
     <section 
       id="reimagined" 
-      className="py-16 md:py-24 border-b border-slate-100 scroll-mt-20"
+      className="py-16 md:py-32 border-b border-slate-100 scroll-mt-20 bg-slate-50/50"
     >
-      <div className="space-y-12 max-w-5xl mx-auto px-4">
+      <div className="space-y-16 max-w-5xl mx-auto px-4">
         
         {/* Top Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-6 gap-4">
-          <div className="space-y-2 text-left">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-              Step 06 • Example Demonstration
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-sans font-black text-[#0B1F3A] tracking-tight">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-8 gap-6">
+          <div className="space-y-3 text-left">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block font-mono">
+                Example Preview
+              </span>
+              <span className="bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider font-mono">
+                For Demonstration Only
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
               Imagine Your Business Like This
             </h2>
           </div>
 
           <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
-            <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 text-[9px] font-extrabold px-3 py-1.5 rounded-full flex items-center gap-1 uppercase tracking-wider font-mono">
-              <Sparkles className="h-3 w-3 text-emerald-500 animate-pulse" />
-              <span>Example Preview</span>
+            <span className="bg-blue-50 text-blue-700 border border-blue-100 text-[11px] font-black px-4 py-2 rounded-full flex items-center gap-1.5 uppercase tracking-wider font-mono shadow-sm">
+              <Sparkles className="h-4 w-4 text-blue-500 animate-pulse" />
+              <span>Modern Workspace</span>
             </span>
           </div>
         </div>
@@ -43,123 +51,179 @@ export default function ImagineBusiness({ onScrollToSection }: ImagineBusinessPr
         {/* Mobile Frame Container */}
         <div className="flex justify-center w-full">
           {/* Mobile phone outer frame */}
-          <div className="w-full max-w-[360px] bg-slate-900 rounded-[3rem] p-3 shadow-2xl relative border-4 border-slate-800">
+          <div className="w-full max-w-[380px] bg-slate-900 rounded-[3rem] p-3 shadow-2xl relative border-4 border-slate-800">
             
             {/* Notch */}
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-slate-900 rounded-b-2xl z-20"></div>
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-7 bg-slate-900 rounded-b-3xl z-20"></div>
 
             {/* Screen inner area (Dashboard) */}
-            <div className="bg-slate-50 rounded-[2.5rem] w-full h-[650px] overflow-y-auto no-scrollbar relative flex flex-col">
+            <div className="bg-slate-100/50 rounded-[2.5rem] w-full h-[700px] overflow-y-auto no-scrollbar relative flex flex-col">
               
               {/* Dashboard Header */}
-              <div className="bg-white px-5 pt-12 pb-4 border-b border-slate-100 sticky top-0 z-10 shadow-sm flex items-center justify-between">
+              <div className="bg-white px-6 pt-14 pb-4 border-b border-slate-200/60 sticky top-0 z-10 shadow-sm flex items-center justify-between">
                 <div>
-                  <h3 className="font-black text-[#0B1F3A] text-lg tracking-tight">Workspace</h3>
-                  <span className="text-[8px] text-slate-400 font-bold uppercase font-mono tracking-wider">For Demonstration Only</span>
+                  <h3 className="font-black text-[#0B1F3A] text-xl tracking-tight leading-none mb-1">Example Co.</h3>
+                  <span className="text-[9px] text-slate-400 font-bold uppercase font-mono tracking-widest">Dummy Data Preview</span>
                 </div>
-                <div className="h-7 w-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-[10px]">
-                  A&P
+                <div className="h-8 w-8 rounded-full bg-slate-900 flex items-center justify-center text-white font-black text-[10px] shadow-sm">
+                  EX
                 </div>
               </div>
 
-              {/* Dashboard Content - 2 column layout to simulate desktop dashboard */}
-              <div className="p-3 grid grid-cols-2 gap-3 pb-8">
+              {/* Dashboard Content */}
+              <div className="p-4 grid grid-cols-2 gap-3 pb-12">
                 
-                {/* Customer Management (col-span-2) */}
-                <div className="col-span-2 bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                {/* 1. Today's Appointments (col-span-2) */}
+                <div className="col-span-2 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
+                  <div className="flex items-center justify-between mb-3.5">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-indigo-600" />
+                      <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">Today's Appointments</span>
+                    </div>
+                    <span className="bg-indigo-50 text-indigo-700 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">2 Left</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-white border border-slate-200 shadow-sm text-[#0B1F3A] font-black text-[11px] p-1.5 rounded-lg text-center leading-none min-w-[36px]">
+                          <span className="block mb-0.5">10</span>
+                          <span className="block text-[8px] text-slate-400 uppercase">AM</span>
+                        </div>
+                        <div>
+                          <span className="block text-xs font-bold text-[#0B1F3A]">Sarah Jenkins</span>
+                          <span className="block text-[9px] font-semibold text-slate-500">Premium Service</span>
+                        </div>
+                      </div>
+                      <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                    </div>
+                    <div className="flex justify-between items-center bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-white border border-slate-200 shadow-sm text-[#0B1F3A] font-black text-[11px] p-1.5 rounded-lg text-center leading-none min-w-[36px]">
+                          <span className="block mb-0.5">02</span>
+                          <span className="block text-[8px] text-slate-400 uppercase">PM</span>
+                        </div>
+                        <div>
+                          <span className="block text-xs font-bold text-[#0B1F3A]">Michael Chang</span>
+                          <span className="block text-[9px] font-semibold text-slate-500">Standard Review</span>
+                        </div>
+                      </div>
+                      <span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Customer History */}
+                <div className="col-span-2 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Users className="h-4 w-4 text-blue-600" />
+                    <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">Customer History</span>
+                  </div>
+                  <div className="flex gap-2.5">
+                    <div className="flex-1 bg-blue-50/50 p-3 rounded-xl border border-blue-100/50">
+                      <span className="block text-lg font-black text-[#0B1F3A] leading-none mb-1">1,248</span>
+                      <span className="block text-[9px] text-blue-600 font-bold uppercase tracking-wider">Total Clients</span>
+                    </div>
+                    <div className="flex-1 bg-emerald-50/50 p-3 rounded-xl border border-emerald-100/50">
+                      <span className="block text-lg font-black text-[#0B1F3A] leading-none mb-1">86%</span>
+                      <span className="block text-[9px] text-emerald-600 font-bold uppercase tracking-wider">Return Rate</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Monthly Reports */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col justify-between">
                   <div className="flex items-center gap-2 mb-2">
-                    <Users className="h-3.5 w-3.5 text-blue-600" />
-                    <span className="text-[10px] font-bold text-[#0B1F3A] uppercase">Customer Management</span>
+                    <LineChart className="h-4 w-4 text-purple-600" />
+                    <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">Reports</span>
                   </div>
-                  <div className="flex gap-2">
-                    <div className="flex-1 bg-slate-50 p-1.5 rounded-lg flex justify-between items-center">
-                      <span className="text-[9px] font-semibold text-slate-700">Ananya S.</span>
-                      <span className="text-[8px] bg-emerald-100 text-emerald-700 px-1.5 rounded-full font-bold">VIP</span>
-                    </div>
-                    <div className="flex-1 bg-slate-50 p-1.5 rounded-lg flex justify-between items-center">
-                      <span className="text-[9px] font-semibold text-slate-700">Rohan M.</span>
-                      <span className="text-[8px] bg-blue-100 text-blue-700 px-1.5 rounded-full font-bold">Active</span>
+                  <div className="mt-2">
+                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Est. Revenue</span>
+                    <div className="flex items-end gap-1.5">
+                      <span className="text-xl font-black text-[#0B1F3A] leading-none">$14.2k</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Appointments */}
-                <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Calendar className="h-3 w-3 text-indigo-600" />
-                    <span className="text-[9px] font-bold text-[#0B1F3A] uppercase">Appointments</span>
+                {/* 4. Invoice Summary */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col justify-between">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FileText className="h-4 w-4 text-sky-600" />
+                    <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">Invoices</span>
                   </div>
-                  <div className="space-y-1.5">
-                    <div className="border-l-2 border-indigo-500 pl-1.5">
-                      <span className="block text-[9px] font-semibold text-slate-700">10:30 AM</span>
-                      <span className="block text-[8px] text-slate-500">Consultation</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-[10px]">
+                      <span className="text-slate-500 font-bold">Paid</span>
+                      <span className="font-black text-[#0B1F3A]">24</span>
                     </div>
-                    <div className="border-l-2 border-amber-500 pl-1.5">
-                      <span className="block text-[9px] font-semibold text-slate-700">11:45 AM</span>
-                      <span className="block text-[8px] text-slate-500">Follow-up</span>
+                    <div className="flex justify-between items-center text-[10px]">
+                      <span className="text-slate-500 font-bold">Pending</span>
+                      <span className="font-black text-amber-600">3</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Reports */}
-                <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md transition-shadow flex flex-col justify-between">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <LineChart className="h-3 w-3 text-purple-600" />
-                    <span className="text-[9px] font-bold text-[#0B1F3A] uppercase">Reports</span>
-                  </div>
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <span className="block text-[8px] text-slate-400 font-bold uppercase">Bookings</span>
-                      <span className="text-sm font-black text-[#0B1F3A]">312</span>
+                {/* 5. WhatsApp Messages (col-span-2) */}
+                <div className="col-span-2 bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4 text-[#25D366]" />
+                      <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">WhatsApp Demo</span>
                     </div>
-                    <span className="text-[9px] font-black text-emerald-600">+14%</span>
+                    <span className="h-2 w-2 rounded-full bg-[#25D366] animate-pulse"></span>
+                  </div>
+                  <div className="bg-[#f0f2f5] p-3 rounded-xl border border-slate-100">
+                    <div className="bg-white p-2.5 rounded-xl rounded-tl-none text-[10px] max-w-[85%] font-semibold text-slate-700 shadow-sm mb-2 leading-relaxed">
+                      Hi! Can I reschedule my appointment for tomorrow?
+                    </div>
+                    <div className="bg-[#dcf8c6] p-2.5 rounded-xl rounded-tr-none text-[10px] max-w-[85%] ml-auto font-semibold text-slate-800 shadow-sm leading-relaxed">
+                      Absolutely. We have a 2:00 PM slot available.
+                    </div>
                   </div>
                 </div>
 
-                {/* WhatsApp (col-span-2) */}
-                <div className="col-span-2 bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                {/* 6. Reviews */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
                   <div className="flex items-center gap-2 mb-2">
-                    <MessageSquare className="h-3.5 w-3.5 text-green-600" />
-                    <span className="text-[10px] font-bold text-[#0B1F3A] uppercase">WhatsApp</span>
+                    <Star className="h-4 w-4 text-amber-500 fill-current" />
+                    <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">Reviews</span>
                   </div>
-                  <div className="bg-[#f0f2f5] p-2 rounded-lg">
-                    <div className="bg-[#25D366] text-white p-2 rounded-lg rounded-tr-none text-[9px] max-w-[80%] ml-auto font-medium shadow-sm">
-                      Booking confirmed for 2:00 PM tomorrow!
+                  <div className="flex items-baseline gap-1 mt-1">
+                    <span className="text-xl font-black text-[#0B1F3A]">4.9</span>
+                    <span className="text-[9px] font-bold text-slate-400">/ 5.0</span>
+                  </div>
+                  <span className="text-[9px] font-bold text-slate-500 mt-1 block tracking-wide">128 Total</span>
+                </div>
+
+                {/* 7. Simple Analytics */}
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
+                  <div className="flex items-center gap-2 mb-3">
+                    <BarChart3 className="h-4 w-4 text-rose-500" />
+                    <span className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wide">Analytics</span>
+                  </div>
+                  <div className="mt-2 space-y-2">
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-rose-500 h-2 rounded-full" style={{width: '70%'}}></div>
                     </div>
+                    <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-widest text-right">Profile Views</span>
                   </div>
                 </div>
 
-                {/* Security */}
-                <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <ShieldCheck className="h-3 w-3 text-slate-600" />
-                    <span className="text-[9px] font-bold text-[#0B1F3A] uppercase">Security</span>
+                {/* 8. Business Security (col-span-2) */}
+                <div className="col-span-2 bg-slate-800 rounded-2xl p-4 border border-slate-700 flex items-center justify-between shadow-lg">
+                  <div className="flex items-center gap-2.5">
+                    <ShieldCheck className="h-5 w-5 text-emerald-400" />
+                    <span className="text-[11px] font-black text-white uppercase tracking-wide">Business Security</span>
                   </div>
-                  <span className="text-[8px] font-medium text-slate-600 flex items-center gap-1 bg-slate-50 p-1.5 rounded border border-slate-100">
-                    <ShieldCheck className="h-2.5 w-2.5 text-emerald-500" />
-                    AES-256 Encrypted
-                  </span>
-                </div>
-
-                {/* Review Management */}
-                <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <Star className="h-3 w-3 text-yellow-600" />
-                    <span className="text-[9px] font-bold text-[#0B1F3A] uppercase leading-tight">Reviews</span>
-                  </div>
-                  <div className="flex items-center gap-0.5 text-yellow-500 mb-1">
-                    <Star className="h-2 w-2 fill-current" /><Star className="h-2 w-2 fill-current" /><Star className="h-2 w-2 fill-current" /><Star className="h-2 w-2 fill-current" /><Star className="h-2 w-2 fill-current" />
-                  </div>
-                  <span className="text-[8px] font-medium text-slate-500 italic block">
-                    "Perfect service!"
+                  <span className="bg-emerald-400/20 text-emerald-400 border border-emerald-400/30 text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-widest">
+                    Encrypted
                   </span>
                 </div>
 
               </div>
               
               {/* Bottom indicator line */}
-              <div className="mt-auto pb-2 pt-2 flex justify-center sticky bottom-0 bg-slate-50/80 backdrop-blur-sm">
-                <div className="w-1/3 h-1 bg-slate-300 rounded-full"></div>
+              <div className="mt-auto pb-2 pt-2 flex justify-center sticky bottom-0 bg-slate-100/80 backdrop-blur-md border-t border-slate-200/50">
+                <div className="w-1/3 h-1.5 bg-slate-300 rounded-full"></div>
               </div>
             </div>
           </div>
@@ -168,10 +232,11 @@ export default function ImagineBusiness({ onScrollToSection }: ImagineBusinessPr
         <div className="pt-8 flex justify-center">
           <button
             onClick={() => onScrollToSection("journal")}
-            className="bg-[#0B1F3A] hover:bg-[#1e293b] text-white font-bold text-xs px-8 py-4 rounded-xl transition-all shadow-md inline-flex items-center gap-1.5 cursor-pointer border-0"
+            className="bg-[#0B1F3A] hover:bg-[#2563EB] text-white font-bold text-sm sm:text-base px-10 py-5 rounded-2xl transition-all shadow-xl shadow-blue-900/10 inline-flex items-center gap-2 cursor-pointer border-0"
             id="reimagined-next-btn"
           >
-            <span>View Business Insights Library</span>
+            <span>View Knowledge Library</span>
+            <ArrowUpRight className="h-5 w-5" />
           </button>
         </div>
 
