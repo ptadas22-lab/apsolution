@@ -456,7 +456,35 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
 
             </div>
 
-            <div className="pt-8 text-center space-y-12 animate-in fade-in duration-1000 delay-300 fill-mode-both">
+            <div className="pt-16 animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-300 fill-mode-both max-w-4xl mx-auto">
+              <div className="text-center space-y-4 mb-10">
+                <h3 className="text-3xl font-black text-[#0B1F3A] tracking-tight">What We Observed</h3>
+                <p className="text-slate-500 font-semibold text-sm">
+                  These observations are based on publicly available information.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  snapshotData.snapshot.googleRating !== "Not Found" && parseFloat(snapshotData.snapshot.googleRating) >= 4.0 ? "Strong local reputation" : null,
+                  snapshotData.snapshot.websiteFound !== "Not Found" ? "Website found" : null,
+                  snapshotData.snapshot.instagramFound !== "Not Found" ? "Instagram active" : null,
+                  (snapshotData.snapshot.onlineBooking === "Not Found" || snapshotData.snapshot.onlineBooking === "No") ? "Online booking not detected" : "Online booking enabled",
+                  "Customer communication appears to rely on WhatsApp"
+                ].filter(Boolean).map((obs, idx) => (
+                  <div key={idx} className="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-5 flex items-start gap-4 hover:bg-emerald-50 transition-colors">
+                    <div className="bg-emerald-100 text-emerald-600 rounded-full p-1.5 shrink-0 mt-0.5">
+                      <Check className="h-4 w-4 stroke-[3]" />
+                    </div>
+                    <p className="text-sm font-bold text-emerald-900 leading-snug">
+                      {obs}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-16 pb-8 text-center space-y-12 animate-in fade-in duration-1000 delay-500 fill-mode-both">
               <p className="text-xs font-bold text-slate-400 font-mono uppercase tracking-widest">
                 This snapshot is based on publicly available information.
               </p>
