@@ -282,34 +282,28 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
               {industries.map((item) => {
                 const isSelected = selectedIndustry === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => handleSelectIndustry(item.id, item.label)}
-                    className={`group p-6 rounded-2xl border text-center transition-all duration-300 flex flex-col justify-center items-center gap-3.5 cursor-pointer relative overflow-hidden ${
+                    className={`group p-8 sm:p-10 rounded-3xl border-2 text-center transition-all duration-300 flex flex-col justify-center items-center gap-5 cursor-pointer ${
                       isSelected 
-                        ? "bg-[#0B1F3A] border-[#0B1F3A] shadow-lg shadow-[#0B1F3A]/10 scale-[1.03]" 
-                        : "bg-white border-slate-200 hover:border-slate-350 hover:shadow-md"
-                    }`}
+                        ? "border-[#2563EB] bg-blue-50/30 shadow-md shadow-blue-500/10 scale-[1.02]" 
+                        : "border-slate-100 bg-white hover:border-slate-200 hover:shadow-sm"
+                    } ${item.id === 'other' ? 'col-span-2' : ''}`}
                     id={`industry-select-btn-${item.id}`}
                   >
-                    {isSelected && (
-                      <span className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-transparent pointer-events-none"></span>
-                    )}
-                    <span className="text-3.5xl transition-transform duration-300 group-hover:scale-110 block select-none">
+                    <span className={`text-4xl sm:text-5xl transition-transform duration-300 ${isSelected ? 'scale-110' : 'group-hover:scale-110'} block select-none`}>
                       {item.icon}
                     </span>
-                    <span className={`text-xs sm:text-sm font-bold tracking-tight block ${
-                      isSelected ? "text-white" : "text-[#0B1F3A]"
+                    <span className={`text-sm sm:text-base font-bold tracking-tight block ${
+                      isSelected ? "text-[#2563EB]" : "text-[#0B1F3A]"
                     }`}>
                       {item.label}
                     </span>
-                    {isSelected && (
-                      <span className="absolute bottom-2 h-1 w-6 bg-[#2563EB] rounded-full"></span>
-                    )}
                   </button>
                 );
               })}
