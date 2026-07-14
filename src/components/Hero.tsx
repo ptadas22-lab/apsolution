@@ -11,35 +11,27 @@ export default function Hero({ onScrollToSection }: HeroProps) {
       id="hero" 
       className="flex flex-col items-center justify-center min-h-[75vh] bg-white text-center px-4"
     >
-      <div className="max-w-3xl w-full space-y-6 flex flex-col items-center">
+      <div className="max-w-3xl w-full space-y-6 flex flex-col items-center animate-in fade-in slide-in-from-bottom-8 duration-700">
         
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0B1F3A] tracking-tight leading-tight">
           👋 Welcome to A&P Solutions
         </h1>
         
         <h2 className="text-xl md:text-2xl text-[#2563EB] font-bold tracking-tight">
-          Understand your business before changing it.
+          Research. Understand. Recommend.
         </h2>
         
         <p className="text-base md:text-lg text-slate-500 font-medium max-w-xl leading-relaxed">
-          We study your business using publicly available information and prepare a Business Snapshot with practical improvement ideas.
+          Every business is different. Instead of recommending the same solution to everyone, we first understand your business using publicly available information and then prepare practical recommendations.
         </p>
         
         <div className="pt-8 flex flex-col items-center gap-4 w-full sm:w-auto">
           <button
             id="hero-primary-btn"
-            onClick={() => onScrollToSection("industries")}
-            className="w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#2563EB] text-white font-bold text-base px-10 py-4.5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#0B1F3A]/10 border-none"
+            onClick={() => onScrollToSection("discovery")}
+            className="w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#2563EB] text-white font-bold text-base px-10 py-5 rounded-2xl transition-all shadow-lg shadow-[#0B1F3A]/5 cursor-pointer border-none"
           >
-            <span>Start Business Snapshot</span>
-            <ArrowRight className="h-5 w-5" />
-          </button>
-          
-          <button
-            onClick={() => onScrollToSection("approach")}
-            className="text-sm font-bold text-slate-400 hover:text-[#0B1F3A] underline-offset-4 hover:underline transition-all cursor-pointer bg-transparent border-none"
-          >
-            How it works
+            Start Business Snapshot
           </button>
         </div>
 
