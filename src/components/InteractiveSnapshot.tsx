@@ -57,6 +57,7 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
     if (!formData.category || !formData.businessName || !formData.location) return;
 
     setIsSearching(true);
+    console.log("[App] Research started");
     setError("");
 
     try {

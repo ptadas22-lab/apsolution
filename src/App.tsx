@@ -33,25 +33,69 @@ export default function App() {
   };
 
   const handleSnapshotComplete = async (apiData: any) => {
-    // 1. Process Business Logic
-    const engine = new RecommendationEngine();
-    const chain = await engine.analyze(apiData);
-    
-    // 2. Fetch Example Data from Profile
-    const profile = getIndustryProfile(apiData.snapshot.category || "generic");
-    
-    // 3. Set State
-    setSnapshot(apiData.snapshot);
-    setRecommendations(chain);
-    setWorkflows(profile.workflowComparisons);
+    console.log("[App] Research completed");
 
-    // 4. Scroll to results
-    setTimeout(() => {
-      document.getElementById("snapshot-results")?.scrollIntoView({ 
-        behavior: "smooth",
-        block: "start"
-      });
-    }, 100);
+    // 1. Ensure we have valid data. If null/undefined, create fallback.
+    let validData = apiData;
+    if (!validData || !validData.snapshot) {
+      console.log("[App] API data null or invalid, generating default fallback snapshot");
+      validData = {
+        snapshot: {
+          businessName: "Your Business",
+          category: "generic",
+          location: "Location",
+          googleRating: "Not Found",
+          reviewCount: "Not Found",
+          websiteFound: "Not Found",
+          instagramFound: "Not Found",
+          facebookFound: "Not Found",
+          onlineBooking: "Not Found",
+          whatsApp: "Not Found",
+          businessHours: "Not Found",
+          isFallback: true
+        },
+        observations: []
+      };
+    }
+
+    try {
+      // 2. Process Business Logic
+      const engine = new RecommendationEngine();
+      let chain = await engine.analyze(validData);
+      
+      // 3. Fetch Example Data from Profile
+      const profile = getIndustryProfile(validData.snapshot.category || "generic");
+      
+      // Safety net: ensure chain is never empty
+      if (!chain || chain.length === 0) {
+        chain = profile.generateChain(validData.snapshot, []);
+      }
+      
+      // 4. Set State
+      console.log("[App] Snapshot created");
+      setSnapshot(validData.snapshot);
+      setRecommendations(chain);
+      setWorkflows(profile.workflowComparisons);
+
+      // 5. Scroll to results
+      setTimeout(() => {
+        console.log("[App] Snapshot rendered");
+        document.getElementById("snapshot-results")?.scrollIntoView({ 
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 100);
+    } catch (error) {
+      console.error("[App] Failed to process snapshot logic:", error);
+      // Even if logic fails, force render with empty values so user journey doesn't stop
+      console.log("[App] Snapshot created (emergency fallback)");
+      setSnapshot(validData.snapshot);
+      setRecommendations([]);
+      setTimeout(() => {
+        console.log("[App] Snapshot rendered (emergency fallback)");
+        document.getElementById("snapshot-results")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
   };
 
   const resetJourney = () => {
@@ -82,15 +126,15 @@ export default function App() {
             <LatestInsights />
           </div>
         ) : (
-          <>
-            <Hero onScrollToSection={handleScrollToSection} />
-
-            {/* Phase 2 & 3: Discovery & AI Research */}
-            <InteractiveSnapshot onComplete={handleSnapshotComplete} />
-
-            {/* If analysis is complete, render the consultative journey */}
-            {snapshot && recommendations.length > 0 && (
+            {!snapshot ? (
               <>
+                <Hero onScrollToSection={handleScrollToSection} />
+                {/* Phase 2 & 3: Discovery & AI Research */}
+                <InteractiveSnapshot onComplete={handleSnapshotComplete} />
+              </>
+            ) : (
+              <>
+                {/* If analysis is complete, render the consultative journey */}
                 {/* Phase 4, 5, 6 */}
                 <SnapshotResults 
                   snapshot={snapshot} 
