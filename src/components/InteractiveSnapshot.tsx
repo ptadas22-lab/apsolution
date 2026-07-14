@@ -7,7 +7,14 @@ import {
   Check, 
   ArrowRight, 
   ArrowLeft,
-  TrendingUp,
+  Building2,
+  MapPin,
+  Tag,
+  Star,
+  Users,
+  Calendar,
+  MessageCircle,
+  Clock
 } from "lucide-react";
 
 interface InteractiveSnapshotProps {
@@ -401,114 +408,65 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
 
       {/* STEP 5: Results Dashboard */}
       {step === 5 && snapshotData && (
-        <div id="snapshot-results" className="scroll-mt-0 pb-24">
-          
-          <div className="bg-[#0B1F3A] text-white py-24 text-center px-4 relative overflow-hidden">
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 flex items-center gap-4 w-full max-w-xs px-4 opacity-50">
-              <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-400 rounded-full w-full"></div>
-              </div>
-              <span className="text-[10px] font-bold text-white/50 font-mono uppercase tracking-widest shrink-0">
-                Step 5 of 5
-              </span>
-            </div>
+        <div id="snapshot-results" className="scroll-mt-0 min-h-screen bg-slate-50/50 py-24 px-4">
+          <div className="max-w-6xl mx-auto space-y-16">
             
-            <div className="max-w-3xl mx-auto space-y-6 relative z-10 mt-8">
-              <span className="inline-flex bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest font-mono">
-                {snapshotData.snapshot.category} • {snapshotData.snapshot.location}
+            <div className="text-center space-y-4 animate-in slide-in-from-bottom-4 fade-in duration-700">
+              <span className="inline-block bg-[#2563EB]/10 text-[#2563EB] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest font-mono mb-4">
+                Analysis Complete
               </span>
-              <h2 className="text-5xl lg:text-7xl font-sans font-black tracking-tight leading-tight">
-                {snapshotData.snapshot.businessName}
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0B1F3A] tracking-tight">
+                Business Snapshot
               </h2>
             </div>
-          </div>
 
-          <div className="max-w-6xl mx-auto px-4 -mt-12 relative z-20 space-y-8">
-            {/* Snapshot Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-blue-900/5">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                  <span className="text-xs uppercase font-mono text-slate-400 font-bold">Local Listings</span>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Google Reputation</span>
-                    <span className="text-3xl font-sans font-black text-[#0B1F3A]">
-                      {snapshotData.snapshot.googleRating === "Not Found" ? "4.5" : snapshotData.snapshot.googleRating} ★
-                    </span>
-                    <span className="text-xs text-slate-400 font-bold ml-2">
-                      ({snapshotData.snapshot.reviewCount === "Not Found" ? "48 reviews" : snapshotData.snapshot.reviewCount})
-                    </span>
-                  </div>
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500">
-                    <span>Online Booking:</span>
-                    <span className="text-amber-700 bg-amber-50 border border-amber-100 px-3 py-1 rounded-lg text-[10px]">{snapshotData.snapshot.onlineBooking}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-blue-900/5">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                  <span className="text-xs uppercase font-mono text-slate-400 font-bold">Digital Channels</span>
-                </div>
-                <div className="space-y-4 text-sm font-bold text-slate-600">
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-slate-400"><Globe className="h-4 w-4" /> Website</span>
-                    <span className={snapshotData.snapshot.websiteFound === "Not Found" ? "text-slate-300" : "text-[#2563EB]"}>{snapshotData.snapshot.websiteFound}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-slate-400"><Instagram className="h-4 w-4" /> Instagram</span>
-                    <span className={snapshotData.snapshot.instagramFound === "Not Found" ? "text-slate-300" : "text-[#0B1F3A]"}>{snapshotData.snapshot.instagramFound}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-slate-400"><Facebook className="h-4 w-4" /> Facebook</span>
-                    <span className="text-slate-300">{snapshotData.snapshot.facebookFound}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-blue-900/5">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                  <span className="text-xs uppercase font-mono text-slate-400 font-bold">Estimations</span>
-                </div>
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Est. Annual Revenue</span>
-                    <span className="text-2xl font-black text-[#0B1F3A]">{estimates.revenue}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-[10px] font-bold">
-                    <div>
-                      <span className="block uppercase tracking-widest text-slate-400 mb-1">Busy Days</span>
-                      <span className="text-[#0B1F3A] text-xs">{estimates.busyDays}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-150 fill-mode-both">
+              
+              {[
+                { label: "Business Name", value: snapshotData.snapshot.businessName, icon: <Building2 className="h-5 w-5" /> },
+                { label: "Category", value: snapshotData.snapshot.category, icon: <Tag className="h-5 w-5" /> },
+                { label: "Location", value: snapshotData.snapshot.location, icon: <MapPin className="h-5 w-5" /> },
+                { label: "Google Rating", value: snapshotData.snapshot.googleRating, icon: <Star className="h-5 w-5" /> },
+                { label: "Review Count", value: snapshotData.snapshot.reviewCount, icon: <Users className="h-5 w-5" /> },
+                { label: "Website", value: snapshotData.snapshot.websiteFound, icon: <Globe className="h-5 w-5" /> },
+                { label: "Instagram", value: snapshotData.snapshot.instagramFound, icon: <Instagram className="h-5 w-5" /> },
+                { label: "Facebook", value: snapshotData.snapshot.facebookFound, icon: <Facebook className="h-5 w-5" /> },
+                { label: "Online Booking", value: snapshotData.snapshot.onlineBooking, icon: <Calendar className="h-5 w-5" /> },
+                { label: "WhatsApp", value: snapshotData.snapshot.whatsApp, icon: <MessageCircle className="h-5 w-5" /> },
+                { label: "Business Hours", value: snapshotData.snapshot.businessHours, icon: <Clock className="h-5 w-5" /> }
+              ].map((item, idx) => {
+                const isNotFound = !item.value || item.value === "Not Found";
+                
+                return (
+                  <div key={idx} className="bg-white border-2 border-slate-100 rounded-[2rem] p-6 shadow-xl shadow-blue-900/5 hover:border-[#2563EB]/30 transition-colors flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2.5 rounded-xl ${isNotFound ? 'bg-slate-50 text-slate-400' : 'bg-blue-50 text-[#2563EB]'}`}>
+                        {item.icon}
+                      </div>
+                      <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">
+                        {item.label}
+                      </span>
+                    </div>
+                    <div className={`text-lg sm:text-xl font-black leading-tight ${isNotFound ? 'text-slate-300' : 'text-[#0B1F3A]'}`}>
+                      {isNotFound ? 'Not Found' : item.value}
                     </div>
                   </div>
-                </div>
-              </div>
+                );
+              })}
+
             </div>
 
-            {/* Opportunities */}
-            <div className="pt-16">
-              <h3 className="text-2xl font-black text-[#0B1F3A] mb-8 text-center">Top Opportunities</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {improvements.map((imp, idx) => (
-                  <div key={idx} className="bg-blue-50/50 border border-blue-100 rounded-[2rem] p-8 space-y-4">
-                    <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center text-[#2563EB] shadow-sm">
-                      <Check className="h-5 w-5 stroke-[3]" />
-                    </div>
-                    <h4 className="text-sm font-black text-[#0B1F3A] leading-tight">{imp.title}</h4>
-                    <p className="text-xs text-slate-500 font-bold leading-relaxed">{imp.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <div className="pt-8 text-center space-y-12 animate-in fade-in duration-1000 delay-300 fill-mode-both">
+              <p className="text-xs font-bold text-slate-400 font-mono uppercase tracking-widest">
+                This snapshot is based on publicly available information.
+              </p>
 
-            <div className="pt-16 text-center">
               <button
                 onClick={handleReset}
                 className="inline-flex items-center gap-2 text-slate-400 hover:text-[#0B1F3A] text-sm font-bold bg-transparent border-none cursor-pointer transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span>Analyze another business</span>
+                <span>Start New Search</span>
               </button>
             </div>
 
