@@ -58,11 +58,10 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
     { id: "salon", label: "Salon", icon: "💇" },
     { id: "restaurant", label: "Restaurant", icon: "🍽️" },
     { id: "clinic", label: "Clinic", icon: "🏥" },
-    { id: "retail", label: "Retail Shop", icon: "🛍️" },
+    { id: "retail", label: "Retail", icon: "🛍️" },
     { id: "gym", label: "Gym", icon: "🏋️" },
-    { id: "education", label: "Education", icon: "🏫" },
     { id: "manufacturing", label: "Manufacturing", icon: "🏭" },
-    { id: "more", label: "More", icon: "➕" }
+    { id: "other", label: "Other", icon: "➕" }
   ];
 
   const loadingMessages = [
@@ -87,7 +86,6 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
   const handleSelectIndustry = (id: string, label: string) => {
     setSelectedIndustry(id);
     setSelectedIndustryLabel(label);
-    setStep(2);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -279,33 +277,53 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
         >
           <div className="space-y-12 max-w-4xl mx-auto">
             <div className="space-y-4">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-                Step 01 • Choose Your Industry
-              </span>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                Analyze Your Business
+                What type of business do you own?
               </h2>
-              <p className="text-slate-500 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-                Select your industry category below to begin mapping your custom business snapshot.
-              </p>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              {industries.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleSelectIndustry(item.id, item.label)}
-                  className="group p-6 rounded-2xl border border-slate-200 bg-white text-center hover:border-slate-350 hover:shadow-md transition-all duration-300 flex flex-col justify-center items-center gap-3.5 cursor-pointer"
-                  id={`industry-select-btn-${item.id}`}
-                >
-                  <span className="text-3.5xl transition-transform duration-300 group-hover:scale-110 block select-none">
-                    {item.icon}
-                  </span>
-                  <span className="text-xs sm:text-sm font-bold tracking-tight block text-[#0B1F3A]">
-                    {item.label}
-                  </span>
-                </button>
-              ))}
+              {industries.map((item) => {
+                const isSelected = selectedIndustry === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelectIndustry(item.id, item.label)}
+                    className={`group p-6 rounded-2xl border text-center transition-all duration-300 flex flex-col justify-center items-center gap-3.5 cursor-pointer relative overflow-hidden ${
+                      isSelected 
+                        ? "bg-[#0B1F3A] border-[#0B1F3A] shadow-lg shadow-[#0B1F3A]/10 scale-[1.03]" 
+                        : "bg-white border-slate-200 hover:border-slate-350 hover:shadow-md"
+                    }`}
+                    id={`industry-select-btn-${item.id}`}
+                  >
+                    {isSelected && (
+                      <span className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 to-transparent pointer-events-none"></span>
+                    )}
+                    <span className="text-3.5xl transition-transform duration-300 group-hover:scale-110 block select-none">
+                      {item.icon}
+                    </span>
+                    <span className={`text-xs sm:text-sm font-bold tracking-tight block ${
+                      isSelected ? "text-white" : "text-[#0B1F3A]"
+                    }`}>
+                      {item.label}
+                    </span>
+                    {isSelected && (
+                      <span className="absolute bottom-2 h-1 w-6 bg-[#2563EB] rounded-full"></span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="pt-8 flex justify-center">
+              <button
+                onClick={() => setStep(2)}
+                disabled={!selectedIndustry}
+                className="bg-[#2563EB] disabled:bg-slate-300 hover:bg-blue-700 text-white font-bold text-base sm:text-lg px-12 py-5 rounded-2xl transition-all shadow-md inline-flex items-center gap-2 cursor-pointer border-0"
+              >
+                <span>Continue</span>
+                <ArrowRight className="h-5 w-5" />
+              </button>
             </div>
           </div>
         </section>
