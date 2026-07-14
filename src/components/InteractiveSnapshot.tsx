@@ -38,7 +38,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
   const [selectedIndustryLabel, setSelectedIndustryLabel] = useState<string>("");
   const [businessName, setBusinessName] = useState<string>("");
   const [location, setLocation] = useState<string>("");
-  const [loadingTextIndex, setLoadingTextIndex] = useState<number>(0);
+  const [activeResearchIndex, setActiveResearchIndex] = useState<number>(0);
   const [snapshotData, setSnapshotData] = useState<SnapshotData | null>(null);
   const [error, setError] = useState<string>("");
 
@@ -52,17 +52,29 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
     { id: "other", label: "Other", icon: "➕" }
   ];
 
-  const loadingMessages = [
-    "Searching local directories...",
-    "Analyzing digital presence...",
-    "Generating practical ideas..."
+  const researchTasks = [
+    "Researching Google Business Profile...",
+    "Checking Website...",
+    "Finding Instagram...",
+    "Reading Reviews...",
+    "Checking Facebook...",
+    "Preparing Business Snapshot..."
   ];
 
+  // Manage AI Research Animation Sequence
   useEffect(() => {
     if (step === 4) {
+      setActiveResearchIndex(0);
+      let currentIdx = 0;
       const interval = setInterval(() => {
-        setLoadingTextIndex((prev) => (prev + 1) % loadingMessages.length);
-      }, 1000);
+        currentIdx++;
+        if (currentIdx < researchTasks.length) {
+          setActiveResearchIndex(currentIdx);
+        } else {
+          clearInterval(interval);
+        }
+      }, 1200); // 1.2s per task * 6 tasks = ~7.2 seconds total
+
       return () => clearInterval(interval);
     }
   }, [step]);
@@ -97,6 +109,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
       setSnapshotData(data);
       onSnapshotGenerated(true);
       
+      // Wait for the animation to finish (approx 7.5 seconds)
       setTimeout(() => {
         setStep(5);
         setTimeout(() => {
@@ -105,7 +118,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
             block: "start"
           });
         }, 100);
-      }, 3000);
+      }, 7500);
 
     } catch (err: any) {
       console.error(err);
@@ -122,6 +135,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
     setLocation("");
     setSnapshotData(null);
     onSnapshotGenerated(false);
+    setActiveResearchIndex(0);
   };
 
   const getDynamicEstimates = () => {
@@ -192,28 +206,6 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
   };
 
   const improvements = getImprovements();
-
-  const getBeforeAfter = () => {
-    switch (selectedIndustry) {
-      case "salon":
-        return {
-          before: "Stylists manually typing booking confirmations over WhatsApp. Hair dye formulas on paper cards.",
-          after: "A clean link handles bookings 24/7. Styling cards auto-populate with past formulas."
-        };
-      case "restaurant":
-        return {
-          before: "Receptionist answering reservation calls. Seating wishes typed into disconnected note apps.",
-          after: "Customers see live table openings and book in 3 taps. Allergen flags print on kitchen slips."
-        };
-      default:
-        return {
-          before: "Coordinating schedules and specifications across disconnected note files.",
-          after: "All files and appointments organized under a single unified dashboard."
-        };
-    };
-  };
-
-  const beforeAfter = getBeforeAfter();
 
   // Shared Progress Indicator Component
   const ProgressIndicator = () => (
@@ -339,7 +331,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
                     disabled={!location.trim()}
                     className="bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-lg px-16 py-5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer mx-auto border-none shadow-xl shadow-blue-900/5"
                   >
-                    <span>Generate Snapshot</span>
+                    <span>Analyze Business</span>
                     <Sparkles className="h-5 w-5" />
                   </button>
                   <button onClick={() => setStep(2)} className="text-xs font-bold text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer flex items-center gap-1">
@@ -353,29 +345,56 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
         </section>
       )}
 
-      {/* STEP 4: Minimal Loading Screen */}
+      {/* STEP 4: AI Research Animation Screen */}
       {step === 4 && (
         <section className="min-h-[85vh] flex flex-col items-center justify-center relative px-4">
           <ProgressIndicator />
-          <div className="max-w-md mx-auto space-y-10 text-center animate-in fade-in duration-700">
-            <div className="relative h-24 w-24 mx-auto">
-              <div className="absolute inset-0 rounded-[2rem] border-4 border-slate-100"></div>
-              <div className="absolute inset-0 rounded-[2rem] border-4 border-t-[#2563EB] border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
+          <div className="max-w-lg w-full mx-auto space-y-12 animate-in fade-in duration-700">
+            
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center justify-center p-4 bg-blue-50 rounded-full mb-2">
                 <Sparkles className="h-8 w-8 text-[#2563EB] animate-pulse" />
               </div>
+              <h3 className="text-3xl font-black text-[#0B1F3A] tracking-tight">
+                AI Research Engine
+              </h3>
+              <p className="text-slate-500 font-semibold">
+                Scanning public records for {businessName}...
+              </p>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-2xl font-black text-[#0B1F3A] tracking-tight">
-                Preparing your insights...
-              </h3>
-              <div className="h-6 overflow-hidden">
-                <p className="text-slate-400 text-sm font-bold uppercase tracking-widest font-mono animate-pulse">
-                  {loadingMessages[loadingTextIndex]}
-                </p>
-              </div>
+            <div className="space-y-3">
+              {researchTasks.map((task, idx) => {
+                const isCompleted = idx < activeResearchIndex;
+                const isActive = idx === activeResearchIndex;
+                const isPending = idx > activeResearchIndex;
+
+                return (
+                  <div 
+                    key={idx} 
+                    className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-500 ${
+                      isActive ? "bg-blue-50 border border-blue-100 scale-[1.02] shadow-sm" :
+                      isCompleted ? "bg-white opacity-60" : "bg-transparent opacity-30"
+                    }`}
+                  >
+                    <div className={`h-6 w-6 rounded-full flex items-center justify-center shrink-0 ${
+                      isCompleted ? "bg-emerald-500 text-white" : 
+                      isActive ? "bg-transparent border-2 border-t-[#2563EB] border-r-[#2563EB] border-b-[#2563EB] border-l-transparent animate-spin" :
+                      "bg-slate-200"
+                    }`}>
+                      {isCompleted && <Check className="h-3.5 w-3.5 stroke-[3]" />}
+                    </div>
+                    <span className={`text-sm font-bold ${
+                      isActive ? "text-[#0B1F3A]" : 
+                      isCompleted ? "text-slate-600 line-through" : "text-slate-400"
+                    }`}>
+                      {task}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
+
           </div>
         </section>
       )}
