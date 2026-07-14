@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import InteractiveSnapshot from "./components/InteractiveSnapshot";
-import OurApproach from "./components/OurApproach";
 import ImagineBusiness from "./components/ImagineBusiness";
 import LatestInsights from "./components/LatestInsights";
 import ContactSection from "./components/ContactSection";
@@ -44,9 +43,6 @@ export default function App() {
 
         {/* Section 1: Hero Banner */}
         <Hero onScrollToSection={handleScrollToSection} />
-
-        {/* Section 2: How We Work / Our Approach */}
-        <OurApproach onScrollToSection={handleScrollToSection} />
 
         {/* Interactive Snapshot (Steps 1, 2, 3, 4, 5, 7, 8) */}
         <InteractiveSnapshot 
