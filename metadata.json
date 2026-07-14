@@ -1,0 +1,6 @@
+{
+  "name": "A&P Solutions",
+  "description": "Helping Small Businesses Grow Smarter. Simple and practical solutions for your small business. Friendly, modern, and professional.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
