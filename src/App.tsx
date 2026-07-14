@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import InteractiveSnapshot from "./components/InteractiveSnapshot";
+import Recommendations from "./components/Recommendations";
 import ImagineBusiness from "./components/ImagineBusiness";
 import LatestInsights from "./components/LatestInsights";
 import ContactSection from "./components/ContactSection";
@@ -49,6 +50,9 @@ export default function App() {
           onSnapshotGenerated={setHasSnapshot}
           onScrollToSection={handleScrollToSection}
         />
+
+        {/* Recommendations Section */}
+        <Recommendations />
 
         {/* Section 5: Imagine Your Business (Concept Demonstration Visualizer - Step 6) */}
         <ImagineBusiness onScrollToSection={handleScrollToSection} />
