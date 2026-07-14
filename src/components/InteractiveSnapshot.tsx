@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { 
   Sparkles, 
-  MapPin, 
   Globe, 
   Instagram, 
   Facebook, 
-  Calendar, 
-  Clock, 
   Check, 
   ArrowRight, 
-  ChevronRight, 
   ArrowLeft,
-  DollarSign,
   TrendingUp,
-  Users,
-  Briefcase,
-  ExternalLink,
-  Lock,
-  MessageSquare,
-  FileText
 } from "lucide-react";
 
 interface InteractiveSnapshotProps {
@@ -44,8 +33,7 @@ interface SnapshotData {
 }
 
 export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSection }: InteractiveSnapshotProps) {
-  // Wizard state machine
-  const [step, setStep] = useState<number>(1); // 1: Select Industry, 2: Enter Details, 3: Loading, 4: Results
+  const [step, setStep] = useState<number>(1);
   const [selectedIndustry, setSelectedIndustry] = useState<string>("");
   const [selectedIndustryLabel, setSelectedIndustryLabel] = useState<string>("");
   const [businessName, setBusinessName] = useState<string>("");
@@ -65,20 +53,16 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
   ];
 
   const loadingMessages = [
-    "Looking up digital presence...",
-    "Reading industry trends...",
-    "Searching public business listings...",
-    "Analyzing neighborhood density...",
-    "Drafting practical recommendations...",
-    "Finalizing interactive snapshot..."
+    "Searching local directories...",
+    "Analyzing digital presence...",
+    "Generating practical ideas..."
   ];
 
-  // Rotate loading text
   useEffect(() => {
-    if (step === 3) {
+    if (step === 4) {
       const interval = setInterval(() => {
         setLoadingTextIndex((prev) => (prev + 1) % loadingMessages.length);
-      }, 700);
+      }, 1000);
       return () => clearInterval(interval);
     }
   }, [step]);
@@ -88,11 +72,10 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
     setSelectedIndustryLabel(label);
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!businessName.trim()) return;
+  const handleFormSubmit = async () => {
+    if (!businessName.trim() || !location.trim() || !selectedIndustryLabel) return;
 
-    setStep(3);
+    setStep(4);
     setError("");
 
     try {
@@ -101,7 +84,7 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           businessName,
-          location: "Mumbai, India",
+          location: location,
           category: selectedIndustryLabel
         })
       });
@@ -114,21 +97,20 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
       setSnapshotData(data);
       onSnapshotGenerated(true);
       
-      // Delay slightly for premium animation experience
       setTimeout(() => {
-        setStep(4);
+        setStep(5);
         setTimeout(() => {
           document.getElementById("snapshot-results")?.scrollIntoView({
             behavior: "smooth",
             block: "start"
           });
         }, 100);
-      }, 2400);
+      }, 3000);
 
     } catch (err: any) {
       console.error(err);
-      setError("We encountered a minor hiccup. Please try again.");
-      setStep(2);
+      setError("Something went wrong. Please try again.");
+      setStep(3);
     }
   };
 
@@ -142,13 +124,10 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
     onSnapshotGenerated(false);
   };
 
-  // Generate dynamic, realistic estimates for Step 4 Snapshot Card
   const getDynamicEstimates = () => {
     if (!snapshotData) return { revenue: "Rs. 25 Lakhs - 45 Lakhs", busyDays: "Sat, Sun", demographics: "Local Residents" };
-    
-    const nameLen = snapshotData.snapshot.businessName.length;
     const locLower = snapshotData.snapshot.location.toLowerCase();
-    const isIndia = locLower.includes("india") || locLower.includes("mumbai") || locLower.includes("delhi") || locLower.includes("bangalore") || locLower.includes("pune") || locLower.includes("dadar") || locLower.includes("bandra");
+    const isIndia = locLower.includes("india") || locLower.includes("mumbai") || locLower.includes("delhi") || locLower.includes("bangalore") || locLower.includes("pune");
 
     let revenue = "";
     let busyDays = "Weekends (Sat & Sun)";
@@ -157,42 +136,30 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
     switch (selectedIndustry) {
       case "salon":
         revenue = isIndia ? "Rs. 18L - 35L" : "$120k - $240k";
-        demographics = "Style-conscious local customers";
         busyDays = "Fri, Sat, Sun";
         break;
       case "restaurant":
         revenue = isIndia ? "Rs. 35L - 75L" : "$250k - $550k";
-        demographics = "Families & food enthusiasts";
         busyDays = "Sat, Sun (Peak Dinner)";
         break;
       case "clinic":
         revenue = isIndia ? "Rs. 40L - 90L" : "$300k - $650k";
-        demographics = "Families & elderly residents";
         busyDays = "Mon, Tue, Wed";
         break;
       case "retail":
         revenue = isIndia ? "Rs. 20L - 50L" : "$140k - $320k";
-        demographics = "Young professionals & fashion buyers";
         busyDays = "Sat, Sun (Peak Afternoon)";
         break;
       case "gym":
         revenue = isIndia ? "Rs. 15L - 30L" : "$90k - $180k";
-        demographics = "Fitness enthusiasts & working professionals";
-        busyDays = "Mon, Tue, Wed (Early Morning & Late Evening)";
-        break;
-      case "education":
-        revenue = isIndia ? "Rs. 12L - 28L" : "$80k - $160k";
-        demographics = "Students & school parents";
-        busyDays = "Mon to Fri (Evening Hours)";
+        busyDays = "Mon, Tue, Wed (Morning/Evening)";
         break;
       case "manufacturing":
         revenue = isIndia ? "Rs. 60L - 1.5Cr" : "$450k - $950k";
-        demographics = "Industrial buyers & wholesale businesses";
         busyDays = "Mon to Fri (Standard Shifts)";
         break;
       default:
         revenue = isIndia ? "Rs. 25L - 50L" : "$150k - $300k";
-        demographics = "Local neighborhood buyers";
         busyDays = "Fri, Sat";
     }
 
@@ -201,209 +168,210 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
 
   const estimates = getDynamicEstimates();
 
-  // Custom recommended improvements for Step 7
   const getImprovements = () => {
     switch (selectedIndustry) {
       case "salon":
         return [
-          { title: "Appointment Management", desc: "Enable an automatic, instant booking page link in your social bios so clients can secure slots without calling." },
-          { title: "Customer Database Tracking", desc: "Establish a quiet cloud folder tracking clients, phone numbers, hair formula logs, and service history securely." },
-          { title: "WhatsApp Notification Schedulers", desc: "Dispatch gentle automated styling reminders exactly 21 days after their last visit to increase repeat bookings." }
+          { title: "Appointment Management", desc: "Enable an automatic booking link in your social bios." },
+          { title: "Customer Database Tracking", desc: "Establish a quiet cloud folder tracking clients and formulas." },
+          { title: "WhatsApp Schedulers", desc: "Dispatch gentle automated reminders 21 days after visits." }
         ];
       case "restaurant":
         return [
-          { title: "Table Reservation System", desc: "Allow guests to request table blocks displaying live status, cutting dinner-prep receptionist phone bottlenecks by 80%." },
-          { title: "Digital Food Ticket Linking", desc: "Centralize dietary limits, allergen warnings, and custom table wishes directly onto physical prep slips." },
-          { title: "Google Review Accelerator", desc: "Send automated review invite prompts 2 hours post-dinner, scaling neighborhood trust ratings instantly." }
-        ];
-      case "clinic":
-        return [
-          { title: "Patient Flow Scheduler", desc: "Enable clinical session booking cards with automatic slot updates, reducing noon clinic no-shows by up to 25%." },
-          { title: "Secure Patient Intake Cards", desc: "Digitize standard pre-care charts, family logs, and allergy checklists before patients enter the clinic." },
-          { title: "Automated Checkup Follow-ups", desc: "Generate automatic treatment-specific wellness reminders sent securely to patient phones." }
-        ];
-      case "retail":
-        return [
-          { title: "VIP Buyer Fitting Profiles", desc: "Store custom apparel measurements, sizing logs, and fabric preferences under secure client profile cards." },
-          { title: "Dynamic Catalog & Invoicing", desc: "Link beautiful online collections showcases, payment slips, and outstanding balances under one single portal." },
-          { title: "Automated Stock Hold Reminders", desc: "Dispatch custom text notifications instantly when special fits or backorders are ready for neighborhood pickup." }
+          { title: "Table Reservation System", desc: "Allow guests to request table blocks displaying live status." },
+          { title: "Digital Food Ticket Linking", desc: "Centralize dietary limits and allergen warnings." },
+          { title: "Google Review Accelerator", desc: "Send automated review invite prompts 2 hours post-dinner." }
         ];
       default:
         return [
-          { title: "Interactive Client Portal", desc: "Let clients schedule sessions, download custom specifications, and track order histories through a dedicated page." },
-          { title: "Centralized Client Registry", desc: "Save communication records, contract files, and personal preferences securely to avoid scattered note files." },
-          { title: "Quiet Follow-up Routines", desc: "Trigger automatic check-ins after project delivery to ensure satisfaction and capture premium neighborhood referrals." }
+          { title: "Interactive Client Portal", desc: "Let clients schedule sessions and track order histories." },
+          { title: "Centralized Client Registry", desc: "Save communication records securely." },
+          { title: "Quiet Follow-up Routines", desc: "Trigger automatic check-ins after project delivery." }
         ];
     }
   };
 
   const improvements = getImprovements();
 
-  // Custom Before/After Comparisons for Step 8
   const getBeforeAfter = () => {
     switch (selectedIndustry) {
       case "salon":
         return {
-          before: "Stylists manually typing booking confirmations over WhatsApp. Hair dye formulas written on paper index cards that occasionally go missing.",
-          after: "A clean link handles bookings 24/7. Styling cards auto-populate with the client's past color formulas, saving 12 hours/week of phone admin."
+          before: "Stylists manually typing booking confirmations over WhatsApp. Hair dye formulas on paper cards.",
+          after: "A clean link handles bookings 24/7. Styling cards auto-populate with past formulas."
         };
       case "restaurant":
         return {
-          before: "Receptionist answering reservation calls during busy dinner prep. Seating wishes and allergy alerts typed into disconnected note apps.",
-          after: "Customers see live table openings and book in 3 taps. Allergen flags print directly on physical kitchen slips, eliminating peak-hour friction."
-        };
-      case "clinic":
-        return {
-          before: "Medical receptionists manually calling patients to confirm slots. Patient intake folders and pre-care notes stored in metal paper cabinets.",
-          after: "Automatic secure reminders confirm slots 24 hours prior. Digital pre-care intake forms completed on mobile before arrival, cutting waiting delays."
+          before: "Receptionist answering reservation calls. Seating wishes typed into disconnected note apps.",
+          after: "Customers see live table openings and book in 3 taps. Allergen flags print on kitchen slips."
         };
       default:
         return {
-          before: "Coordinating schedules, project specifications, and payments across three different note files and endless chat threads.",
-          after: "All files, appointments, and payments organized under a single quiet, unified customer dashboard that looks highly professional."
+          before: "Coordinating schedules and specifications across disconnected note files.",
+          after: "All files and appointments organized under a single unified dashboard."
         };
     };
   };
 
   const beforeAfter = getBeforeAfter();
 
+  // Shared Progress Indicator Component
+  const ProgressIndicator = () => (
+    <div className="absolute top-10 left-1/2 -translate-x-1/2 flex items-center gap-4 w-full max-w-xs px-4">
+      <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-[#2563EB] rounded-full transition-all duration-700 ease-out" 
+          style={{ width: `${(step / 5) * 100}%` }}
+        ></div>
+      </div>
+      <span className="text-[11px] font-bold text-slate-400 font-mono uppercase tracking-widest shrink-0">
+        Step {step} of 5
+      </span>
+    </div>
+  );
+
   return (
-    <div className="w-full">
-      {/* STEP 1: Select Industry */}
-      {step === 1 && (
-        <section 
-          id="industries" 
-          className="py-16 md:py-24 border-b border-slate-100 scroll-mt-20 text-center"
-        >
-          <div className="space-y-12 max-w-4xl mx-auto">
-            <div className="space-y-4">
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
+    <div className="w-full bg-white relative">
+      
+      {/* ChatGPT-Style Full Screen Inputs (Steps 1, 2, 3) */}
+      {step >= 1 && step <= 3 && (
+        <section id="industries" className="min-h-[85vh] flex flex-col items-center justify-center relative px-4 scroll-mt-0">
+          <ProgressIndicator />
+
+          {/* Step 1: Category */}
+          {step === 1 && (
+            <div className="max-w-4xl w-full text-center space-y-12 animate-in fade-in zoom-in-95 duration-500">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight">
                 What type of business do you own?
               </h2>
-            </div>
 
-            <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
-              {industries.map((item) => {
-                const isSelected = selectedIndustry === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleSelectIndustry(item.id, item.label)}
-                    className={`group p-8 sm:p-10 rounded-3xl border-2 text-center transition-all duration-300 flex flex-col justify-center items-center gap-5 cursor-pointer ${
-                      isSelected 
-                        ? "border-[#2563EB] bg-blue-50/30 shadow-md shadow-blue-500/10 scale-[1.02]" 
-                        : "border-slate-100 bg-white hover:border-slate-200 hover:shadow-sm"
-                    } ${item.id === 'other' ? 'col-span-2' : ''}`}
-                    id={`industry-select-btn-${item.id}`}
-                  >
-                    <span className={`text-4xl sm:text-5xl transition-transform duration-300 ${isSelected ? 'scale-110' : 'group-hover:scale-110'} block select-none`}>
-                      {item.icon}
-                    </span>
-                    <span className={`text-sm sm:text-base font-bold tracking-tight block ${
-                      isSelected ? "text-[#2563EB]" : "text-[#0B1F3A]"
-                    }`}>
-                      {item.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="pt-8 flex justify-center">
-              <button
-                onClick={() => setStep(2)}
-                disabled={!selectedIndustry}
-                className="bg-[#2563EB] disabled:bg-slate-300 hover:bg-blue-700 text-white font-bold text-base sm:text-lg px-12 py-5 rounded-2xl transition-all shadow-md inline-flex items-center gap-2 cursor-pointer border-0"
-              >
-                <span>Continue</span>
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* STEP 2: Input Details Form */}
-      {step === 2 && (
-        <section 
-          id="snapshot-form" 
-          className="py-16 md:py-24 border-b border-slate-100 scroll-mt-20 text-center"
-        >
-          <div className="max-w-3xl mx-auto space-y-12">
-            <div className="space-y-4">
-              <button 
-                onClick={() => setStep(1)}
-                className="inline-flex items-center gap-1 text-slate-450 hover:text-[#2563EB] text-[10.5px] font-bold font-mono uppercase bg-transparent border-0 cursor-pointer mb-4"
-              >
-                <ArrowLeft className="h-3 w-3" />
-                <span>Back</span>
-              </button>
-              
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                What is your business name?
-              </h2>
-            </div>
-
-            <form onSubmit={handleFormSubmit} className="max-w-2xl mx-auto space-y-8">
-              <div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Sameera's Family Salon"
-                  value={businessName}
-                  onChange={(e) => setBusinessName(e.target.value)}
-                  className="w-full bg-transparent border-b-2 border-slate-200 focus:border-[#2563EB] text-center px-4 py-4 text-2xl sm:text-4xl font-bold focus:outline-none transition-colors placeholder:text-slate-300 text-[#0B1F3A]"
-                />
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                {industries.map((item) => {
+                  const isSelected = selectedIndustry === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleSelectIndustry(item.id, item.label)}
+                      className={`p-6 rounded-2xl border-2 text-center transition-all duration-200 flex flex-col items-center gap-3 cursor-pointer ${
+                        isSelected 
+                          ? "border-[#2563EB] bg-blue-50/50 scale-105 shadow-lg shadow-blue-900/5" 
+                          : "border-slate-100 hover:border-slate-300 hover:bg-slate-50"
+                      } ${item.id === 'other' ? 'col-span-2 sm:col-span-1' : ''}`}
+                    >
+                      <span className="text-4xl block select-none">{item.icon}</span>
+                      <span className={`text-sm font-bold tracking-tight block ${isSelected ? "text-[#2563EB]" : "text-[#0B1F3A]"}`}>
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
-              <p className="text-slate-500 text-sm font-semibold">
-                We'll use publicly available information to prepare your Business Snapshot.
-              </p>
-
-              <div className="pt-4 flex justify-center">
+              <div className="pt-8">
                 <button
-                  type="submit"
-                  disabled={!businessName.trim()}
-                  className="bg-[#2563EB] disabled:bg-slate-300 hover:bg-blue-700 text-white font-bold text-base sm:text-lg px-12 py-5 rounded-2xl transition-all shadow-md inline-flex items-center gap-2 cursor-pointer border-0"
+                  onClick={() => setStep(2)}
+                  disabled={!selectedIndustry}
+                  className="bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-lg px-16 py-5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer mx-auto border-none shadow-xl shadow-blue-900/5"
                 >
                   <span>Continue</span>
                   <ArrowRight className="h-5 w-5" />
                 </button>
               </div>
+            </div>
+          )}
 
-              {error && <p className="text-red-500 text-[11px] font-semibold text-center mt-2">{error}</p>}
-            </form>
-          </div>
+          {/* Step 2: Name */}
+          {step === 2 && (
+            <div className="max-w-3xl w-full text-center space-y-12 animate-in slide-in-from-right-8 fade-in duration-500">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight">
+                What is your business name?
+              </h2>
+
+              <div className="max-w-xl mx-auto space-y-12">
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="e.g. Sameera's Family Salon"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  onKeyDown={(e) => { if(e.key === 'Enter' && businessName.trim()) setStep(3) }}
+                  className="w-full bg-transparent border-b-2 border-slate-200 focus:border-[#2563EB] text-center px-4 py-4 text-3xl sm:text-4xl font-bold focus:outline-none transition-colors placeholder:text-slate-200 text-[#0B1F3A]"
+                />
+
+                <div className="flex flex-col items-center gap-4">
+                  <button
+                    onClick={() => setStep(3)}
+                    disabled={!businessName.trim()}
+                    className="bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-lg px-16 py-5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer mx-auto border-none shadow-xl shadow-blue-900/5"
+                  >
+                    <span>Continue</span>
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                  <button onClick={() => setStep(1)} className="text-xs font-bold text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer flex items-center gap-1">
+                    <ArrowLeft className="h-3 w-3" /> Back
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Location */}
+          {step === 3 && (
+            <div className="max-w-3xl w-full text-center space-y-12 animate-in slide-in-from-right-8 fade-in duration-500">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] tracking-tight">
+                Where is it located?
+              </h2>
+
+              <div className="max-w-xl mx-auto space-y-12">
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="e.g. Bandra, Mumbai"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  onKeyDown={(e) => { if(e.key === 'Enter' && location.trim()) handleFormSubmit() }}
+                  className="w-full bg-transparent border-b-2 border-slate-200 focus:border-[#2563EB] text-center px-4 py-4 text-3xl sm:text-4xl font-bold focus:outline-none transition-colors placeholder:text-slate-200 text-[#0B1F3A]"
+                />
+
+                <div className="flex flex-col items-center gap-4">
+                  <button
+                    onClick={handleFormSubmit}
+                    disabled={!location.trim()}
+                    className="bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-lg px-16 py-5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer mx-auto border-none shadow-xl shadow-blue-900/5"
+                  >
+                    <span>Generate Snapshot</span>
+                    <Sparkles className="h-5 w-5" />
+                  </button>
+                  <button onClick={() => setStep(2)} className="text-xs font-bold text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer flex items-center gap-1">
+                    <ArrowLeft className="h-3 w-3" /> Back
+                  </button>
+                  {error && <p className="text-red-500 text-xs font-bold mt-2">{error}</p>}
+                </div>
+              </div>
+            </div>
+          )}
         </section>
       )}
 
-      {/* STEP 3: Beautiful Loading Animation */}
-      {step === 3 && (
-        <section className="py-24 md:py-32 border-b border-slate-100 flex flex-col items-center justify-center text-center">
-          <div className="max-w-md mx-auto space-y-8">
-            {/* Spinning, glowing loading frame */}
-            <div className="relative h-20 w-20 mx-auto">
-              {/* Outer glowing ring */}
-              <div className="absolute inset-0 rounded-3xl border-4 border-[#2563EB]/10 animate-pulse"></div>
-              {/* Spin ring */}
-              <div className="absolute inset-0 rounded-3xl border-4 border-t-[#2563EB] border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
-              {/* Inner ambient Sparkles */}
+      {/* STEP 4: Minimal Loading Screen */}
+      {step === 4 && (
+        <section className="min-h-[85vh] flex flex-col items-center justify-center relative px-4">
+          <ProgressIndicator />
+          <div className="max-w-md mx-auto space-y-10 text-center animate-in fade-in duration-700">
+            <div className="relative h-24 w-24 mx-auto">
+              <div className="absolute inset-0 rounded-[2rem] border-4 border-slate-100"></div>
+              <div className="absolute inset-0 rounded-[2rem] border-4 border-t-[#2563EB] border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <Sparkles className="h-6 w-6 text-[#2563EB] animate-pulse" />
+                <Sparkles className="h-8 w-8 text-[#2563EB] animate-pulse" />
               </div>
             </div>
 
-            <div className="space-y-3">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-                AI Snapshot Engine
-              </span>
-              <h3 className="text-xl sm:text-2xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                Searching public records...
+            <div className="space-y-4">
+              <h3 className="text-2xl font-black text-[#0B1F3A] tracking-tight">
+                Preparing your insights...
               </h3>
-              
-              {/* Cycling message */}
               <div className="h-6 overflow-hidden">
-                <p className="text-[#2563EB] text-xs font-bold transition-all duration-300">
+                <p className="text-slate-400 text-sm font-bold uppercase tracking-widest font-mono animate-pulse">
                   {loadingMessages[loadingTextIndex]}
                 </p>
               </div>
@@ -412,239 +380,120 @@ export default function InteractiveSnapshot({ onSnapshotGenerated, onScrollToSec
         </section>
       )}
 
-      {/* STEP 4: Results Dashboard */}
-      {step === 4 && snapshotData && (
-        <div id="snapshot-results" className="scroll-mt-20 space-y-16">
+      {/* STEP 5: Results Dashboard */}
+      {step === 5 && snapshotData && (
+        <div id="snapshot-results" className="scroll-mt-0 pb-24">
           
-          {/* Section 4: Business Snapshot Cards */}
-          <section className="py-16 border-b border-slate-100">
-            <div className="space-y-12">
-              <div className="space-y-4 text-center max-w-3xl mx-auto">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-                  Step 04 • Business Snapshot
-                </span>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                  {snapshotData.snapshot.businessName}
-                </h2>
-                <p className="text-slate-500 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-                  A high-level view of your public digital profiles and industry estimations.
-                </p>
+          <div className="bg-[#0B1F3A] text-white py-24 text-center px-4 relative overflow-hidden">
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 flex items-center gap-4 w-full max-w-xs px-4 opacity-50">
+              <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+                <div className="h-full bg-emerald-400 rounded-full w-full"></div>
+              </div>
+              <span className="text-[10px] font-bold text-white/50 font-mono uppercase tracking-widest shrink-0">
+                Step 5 of 5
+              </span>
+            </div>
+            
+            <div className="max-w-3xl mx-auto space-y-6 relative z-10 mt-8">
+              <span className="inline-flex bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest font-mono">
+                {snapshotData.snapshot.category} • {snapshotData.snapshot.location}
+              </span>
+              <h2 className="text-5xl lg:text-7xl font-sans font-black tracking-tight leading-tight">
+                {snapshotData.snapshot.businessName}
+              </h2>
+            </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto px-4 -mt-12 relative z-20 space-y-8">
+            {/* Snapshot Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+              <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-blue-900/5">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                  <span className="text-xs uppercase font-mono text-slate-400 font-bold">Local Listings</span>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Google Reputation</span>
+                    <span className="text-3xl font-sans font-black text-[#0B1F3A]">
+                      {snapshotData.snapshot.googleRating === "Not Found" ? "4.5" : snapshotData.snapshot.googleRating} ★
+                    </span>
+                    <span className="text-xs text-slate-400 font-bold ml-2">
+                      ({snapshotData.snapshot.reviewCount === "Not Found" ? "48 reviews" : snapshotData.snapshot.reviewCount})
+                    </span>
+                  </div>
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500">
+                    <span>Online Booking:</span>
+                    <span className="text-amber-700 bg-amber-50 border border-amber-100 px-3 py-1 rounded-lg text-[10px]">{snapshotData.snapshot.onlineBooking}</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Snapshot Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
-                
-                {/* Card 1: Directory Reputation */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-                    <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">Local Listings</span>
-                    <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+              <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-blue-900/5">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                  <span className="text-xs uppercase font-mono text-slate-400 font-bold">Digital Channels</span>
+                </div>
+                <div className="space-y-4 text-sm font-bold text-slate-600">
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-2 text-slate-400"><Globe className="h-4 w-4" /> Website</span>
+                    <span className={snapshotData.snapshot.websiteFound === "Not Found" ? "text-slate-300" : "text-[#2563EB]"}>{snapshotData.snapshot.websiteFound}</span>
                   </div>
-                  <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-2 text-slate-400"><Instagram className="h-4 w-4" /> Instagram</span>
+                    <span className={snapshotData.snapshot.instagramFound === "Not Found" ? "text-slate-300" : "text-[#0B1F3A]"}>{snapshotData.snapshot.instagramFound}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-2 text-slate-400"><Facebook className="h-4 w-4" /> Facebook</span>
+                    <span className="text-slate-300">{snapshotData.snapshot.facebookFound}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-blue-900/5">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                  <span className="text-xs uppercase font-mono text-slate-400 font-bold">Estimations</span>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Est. Annual Revenue</span>
+                    <span className="text-2xl font-black text-[#0B1F3A]">{estimates.revenue}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-[10px] font-bold">
                     <div>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Google Reputation</span>
-                      <span className="text-xl font-sans font-black text-[#0B1F3A]">
-                        {snapshotData.snapshot.googleRating === "Not Found" ? "4.5" : snapshotData.snapshot.googleRating} ★
-                      </span>
-                      <span className="text-[10.5px] text-slate-400 font-bold block">
-                        ({snapshotData.snapshot.reviewCount === "Not Found" ? "48 reviews" : snapshotData.snapshot.reviewCount})
-                      </span>
-                    </div>
-                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-slate-500">
-                      <span>Online Booking:</span>
-                      <span className="text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-[10px] font-bold">{snapshotData.snapshot.onlineBooking}</span>
+                      <span className="block uppercase tracking-widest text-slate-400 mb-1">Busy Days</span>
+                      <span className="text-[#0B1F3A] text-xs">{estimates.busyDays}</span>
                     </div>
                   </div>
                 </div>
-
-                {/* Card 2: Channels found */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-                    <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">Digital Channels</span>
-                    <span className="text-[9px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-extrabold uppercase font-mono">Found Assets</span>
-                  </div>
-                  <div className="space-y-2.5 text-xs font-semibold text-slate-600">
-                    <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-450">
-                        <Globe className="h-3.5 w-3.5" />
-                        <span>Website:</span>
-                      </span>
-                      <span className={snapshotData.snapshot.websiteFound === "Not Found" ? "text-slate-400" : "text-[#2563EB] font-bold"}>
-                        {snapshotData.snapshot.websiteFound}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-450">
-                        <Instagram className="h-3.5 w-3.5" />
-                        <span>Instagram:</span>
-                      </span>
-                      <span className={snapshotData.snapshot.instagramFound === "Not Found" ? "text-slate-400" : "text-[#0B1F3A] font-bold"}>
-                        {snapshotData.snapshot.instagramFound}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 text-slate-450">
-                        <Facebook className="h-3.5 w-3.5" />
-                        <span>Facebook:</span>
-                      </span>
-                      <span className="text-slate-400">{snapshotData.snapshot.facebookFound}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card 3: Estimated Benchmarks */}
-                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-                    <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">Estimations & Benchmarks</span>
-                    <TrendingUp className="h-4 w-4 text-[#2563EB]" />
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Est. Annual Revenue</span>
-                      <span className="text-base font-black text-[#0B1F3A]">{estimates.revenue}</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-450">
-                      <div>
-                        <span className="block uppercase tracking-wider text-slate-400 text-[8px]">Busy Days</span>
-                        <span className="text-[#0B1F3A] font-extrabold">{estimates.busyDays}</span>
-                      </div>
-                      <div>
-                        <span className="block uppercase tracking-wider text-slate-400 text-[8px]">Hours</span>
-                        <span className="text-[#0B1F3A] font-extrabold">{snapshotData.snapshot.businessHours}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </div>
-          </section>
 
-          {/* STEP 5: Business Observations (What We Observed) */}
-          <section id="snapshot-observations" className="py-16 border-b border-slate-100">
-            <div className="space-y-12">
-              <div className="space-y-4 text-center max-w-3xl mx-auto">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-                  Step 05 • Business Observations
-                </span>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                  What We Observed
-                </h2>
-                <p className="text-slate-500 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-                  A gentle analysis of how your current workflows compare to industry best practices.
-                </p>
-                <div className="bg-blue-50/50 border border-blue-100/60 p-3 rounded-xl max-w-2xl mx-auto">
-                  <p className="text-[10.5px] text-[#2563EB] font-semibold italic leading-normal">
-                    Disclaimer: These observations are examples based on our research with similar businesses, not direct studies of your physical store.
-                  </p>
-                </div>
-              </div>
-
-              {/* Observations Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-4xl mx-auto">
-                {snapshotData.observations.map((obs, idx) => (
-                  <div key={idx} className="bg-[#0B1F3A]/5 border border-[#0B1F3A]/10 rounded-2xl p-6.5 flex gap-4 hover:bg-[#0B1F3A]/10 transition-colors">
-                    <div className="h-7 w-7 rounded-lg bg-[#0B1F3A] text-white flex items-center justify-center text-xs shrink-0 font-bold font-mono">
-                      {idx + 1}
-                    </div>
-                    <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-semibold">
-                      {obs}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* STEP 7: Recommended Improvements */}
-          <section id="snapshot-improvements" className="py-16 border-b border-slate-100">
-            <div className="space-y-12">
-              <div className="space-y-4 text-center max-w-3xl mx-auto">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-                  Step 07 • Opportunities
-                </span>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                  Recommended Improvements
-                </h2>
-                <p className="text-slate-500 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-                  Businesses similar to yours often improve operations and save hours by adopting these:
-                </p>
-              </div>
-
-              {/* Improvements Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
+            {/* Opportunities */}
+            <div className="pt-16">
+              <h3 className="text-2xl font-black text-[#0B1F3A] mb-8 text-center">Top Opportunities</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {improvements.map((imp, idx) => (
-                  <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6.5 shadow-sm hover:shadow-md transition-shadow space-y-4">
-                    <div className="h-9 w-9 rounded-xl bg-[#2563EB]/10 flex items-center justify-center text-[#2563EB]">
-                      <Check className="h-5 w-5 stroke-[2.5]" />
+                  <div key={idx} className="bg-blue-50/50 border border-blue-100 rounded-[2rem] p-8 space-y-4">
+                    <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center text-[#2563EB] shadow-sm">
+                      <Check className="h-5 w-5 stroke-[3]" />
                     </div>
-                    <div className="space-y-2">
-                      <h4 className="text-xs sm:text-sm font-bold text-[#0B1F3A] tracking-tight leading-snug">
-                        {imp.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 font-semibold leading-relaxed">
-                        {imp.desc}
-                      </p>
-                    </div>
+                    <h4 className="text-sm font-black text-[#0B1F3A] leading-tight">{imp.title}</h4>
+                    <p className="text-xs text-slate-500 font-bold leading-relaxed">{imp.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
-          </section>
 
-          {/* STEP 8: Example Solution (Before/After comparison cards) */}
-          <section className="py-16 border-b border-slate-100">
-            <div className="space-y-12">
-              <div className="space-y-4 text-center max-w-3xl mx-auto">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block font-mono">
-                  Step 08 • Example Solution
-                </span>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-black text-[#0B1F3A] tracking-tight">
-                  Before vs. After
-                </h2>
-                <p className="text-slate-500 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-semibold">
-                  Let's see what a custom, quiet automated workflow looks like in real daily routines.
-                </p>
-              </div>
-
-              {/* Before vs After Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
-                
-                {/* Before Card */}
-                <div className="bg-red-50/40 border border-red-100 rounded-3xl p-8 space-y-4 relative overflow-hidden">
-                  <div className="inline-flex bg-red-50 text-red-700 text-[10px] font-bold uppercase font-mono px-2.5 py-1 rounded">
-                    Before: Manual & Scattered
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-semibold font-sans">
-                    {beforeAfter.before}
-                  </p>
-                </div>
-
-                {/* After Card */}
-                <div className="bg-emerald-50/40 border border-emerald-100 rounded-3xl p-8 space-y-4 relative overflow-hidden">
-                  <div className="inline-flex bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase font-mono px-2.5 py-1 rounded">
-                    After: Organized & Automatic
-                  </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-semibold font-sans">
-                    {beforeAfter.after}
-                  </p>
-                </div>
-
-              </div>
-
-              <div className="pt-6 text-center">
-                <button
-                  onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 text-slate-450 hover:text-[#0B1F3A] text-xs font-bold bg-transparent border-0 cursor-pointer"
-                  id="reset-snapshot-btn"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  <span>Analyze another business</span>
-                </button>
-              </div>
+            <div className="pt-16 text-center">
+              <button
+                onClick={handleReset}
+                className="inline-flex items-center gap-2 text-slate-400 hover:text-[#0B1F3A] text-sm font-bold bg-transparent border-none cursor-pointer transition-colors"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>Analyze another business</span>
+              </button>
             </div>
-          </section>
 
+          </div>
         </div>
       )}
     </div>
