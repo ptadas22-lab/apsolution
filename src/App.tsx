@@ -173,7 +173,9 @@ export default function App() {
         )}
       </main>
 
-      <Footer onScrollToSection={handleScrollToSection} />
+      {(snapshot || currentView === "insights") && (
+        <Footer onScrollToSection={handleScrollToSection} />
+      )}
 
     </div>
   );

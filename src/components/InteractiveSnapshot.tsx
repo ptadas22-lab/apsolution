@@ -28,11 +28,11 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
 
   const researchTasks = [
     "Researching Google Business Profile",
-    "Checking Official Website",
-    "Reading Google Reviews",
+    "Checking Website",
+    "Checking Reviews",
     "Finding Instagram",
     "Checking Facebook",
-    "Looking for Online Booking",
+    "Checking Online Booking",
     "Preparing Business Snapshot"
   ];
 
@@ -117,21 +117,48 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
     <section id="discovery" className="min-h-[75vh] flex flex-col items-center justify-center relative px-4 scroll-mt-20">
       
       {!isSearching ? (
-        <div className="max-w-xl w-full animate-in fade-in zoom-in-95 duration-500">
+        <div className="max-w-2xl w-full flex flex-col gap-8 animate-in fade-in zoom-in-95 duration-500 py-12">
           
-          <div className="text-center mb-8">
-            <span className="text-[11px] font-bold text-slate-400 font-mono uppercase tracking-widest">
-              Step 1 of 5
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#0B1F3A] tracking-tight mt-2">
-              Business Discovery
-            </h2>
+          {/* SECTION 2: EXPECTATION CARD */}
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 sm:p-10 text-left">
+            <h3 className="text-2xl font-black text-[#0B1F3A] tracking-tight mb-6">
+              What happens next?
+            </h3>
+            <ul className="space-y-4 mb-8">
+              {[
+                "Research your public business information",
+                "Prepare your Business Snapshot",
+                "Explain what we found",
+                "Show example workflows",
+                "Suggest possible improvements",
+                "Prepare discussion points"
+              ].map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <div className="bg-[#2563EB]/10 p-1 rounded-full text-[#2563EB] shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 stroke-[3]" />
+                  </div>
+                  <span className="text-sm font-semibold text-slate-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-slate-200">
+              <p className="text-xs font-medium text-slate-500 max-w-sm">
+                This analysis is based on publicly available information and demonstration examples.
+              </p>
+              <span className="text-xs font-bold text-[#0B1F3A] bg-white px-3 py-1.5 rounded-full border border-slate-200 whitespace-nowrap">
+                Takes &lt; 1 minute
+              </span>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white border border-slate-100 rounded-3xl p-8 sm:p-10 shadow-xl shadow-blue-900/5 space-y-8">
+          {/* SECTION 3: BUSINESS DISCOVERY */}
+          <form onSubmit={handleSubmit} className="bg-white border border-slate-100 rounded-3xl p-8 sm:p-10 shadow-xl shadow-blue-900/5 space-y-8 relative">
+            <div className="absolute -top-3.5 left-8 bg-[#0B1F3A] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+              Step 1 of 5
+            </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700">Business Category</label>
+              <label className="text-sm font-bold text-slate-700">Which industry are you in?</label>
               <select 
                 value={formData.category}
                 onChange={(e) => setFormData({...formData, category: e.target.value})}
@@ -145,7 +172,7 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700">Business Name</label>
+              <label className="text-sm font-bold text-slate-700">What's your business name?</label>
               <input 
                 type="text"
                 placeholder="e.g. Sameera's Family Salon"
@@ -156,7 +183,7 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700">Business Location</label>
+              <label className="text-sm font-bold text-slate-700">Where is your business located?</label>
               <input 
                 type="text"
                 placeholder="e.g. Dadar, Mumbai"
@@ -171,9 +198,9 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
             <button
               type="submit"
               disabled={!isFormValid}
-              className="w-full bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-base px-8 py-5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer border-none"
+              className="w-full bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-base px-8 py-5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer border-none mt-4"
             >
-              <span>Continue</span>
+              <span>Start Business Snapshot</span>
               <ArrowRight className="h-5 w-5" />
             </button>
 

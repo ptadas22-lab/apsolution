@@ -38,16 +38,6 @@ export default function Navigation({ hasSnapshot, onScrollToSection, onStartSnap
         <nav className="hidden md:flex items-center space-x-8 text-xs font-bold text-[#0B1F3A]">
           <button 
             onClick={() => {
-              if (onSwitchView) onSwitchView("home");
-              onScrollToSection("hero");
-            }}
-            className={`${currentView === "home" ? "text-[#2563EB]" : "text-slate-500 hover:text-[#0B1F3A]"} transition-colors cursor-pointer bg-transparent border-none p-0`}
-          >
-            Consultation
-          </button>
-          
-          <button 
-            onClick={() => {
               if (onSwitchView) onSwitchView("insights");
             }}
             className={`${currentView === "insights" ? "text-[#2563EB]" : "text-slate-500 hover:text-[#0B1F3A]"} transition-colors cursor-pointer bg-transparent border-none p-0`}
@@ -56,27 +46,7 @@ export default function Navigation({ hasSnapshot, onScrollToSection, onStartSnap
           </button>
         </nav>
 
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
-          {!hasSnapshot && currentView === "home" ? (
-            <button
-              onClick={onStartSnapshot}
-              className="bg-[#0B1F3A] hover:bg-[#1e293b] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-[#0B1F3A]/10 cursor-pointer border-none"
-            >
-              Start Snapshot
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                if (onSwitchView) onSwitchView("home");
-                onScrollToSection("contact");
-              }}
-              className="bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-900/10 cursor-pointer border-none"
-            >
-              Book Consultation
-            </button>
-          )}
-        </div>
+        {/* Action Buttons removed as per AI Business Consultant Blueprint */}
 
       </div>
     </header>

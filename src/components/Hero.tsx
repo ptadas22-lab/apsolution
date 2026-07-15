@@ -22,18 +22,8 @@ export default function Hero({ onScrollToSection }: HeroProps) {
         </h2>
         
         <p className="text-base md:text-lg text-slate-500 font-medium max-w-xl leading-relaxed">
-          Every business is different. Instead of recommending the same solution to everyone, we first understand your business using publicly available information and then prepare practical recommendations.
+          Every business is different. We'll study your business using publicly available information. Then we'll explain what we found and show practical examples of how businesses organise their work.
         </p>
-        
-        <div className="pt-8 flex flex-col items-center gap-4 w-full sm:w-auto">
-          <button
-            id="hero-primary-btn"
-            onClick={() => onScrollToSection("discovery")}
-            className="w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#2563EB] text-white font-bold text-base px-10 py-5 rounded-2xl transition-all shadow-lg shadow-[#0B1F3A]/5 cursor-pointer border-none"
-          >
-            Start Business Snapshot
-          </button>
-        </div>
 
       </div>
     </section>
