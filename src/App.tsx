@@ -128,6 +128,7 @@ export default function App() {
             <LatestInsights />
           </div>
         ) : (
+          <>
             {!snapshot ? (
               <>
                 <Hero onScrollToSection={handleScrollToSection} />
