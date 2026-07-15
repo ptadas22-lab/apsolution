@@ -1,6 +1,6 @@
 import React from "react";
 import { 
-  Building2, MapPin, Tag, Star, Users, Globe, Instagram, Facebook, Calendar, MessageCircle, Clock, Check, Info, ShieldAlert
+  Building2, MapPin, Tag, Star, Users, Globe, Instagram, Facebook, Calendar, MessageCircle, Clock, Check, Info, ShieldAlert, ArrowRight
 } from "lucide-react";
 import { RecommendationChain, StatusIndicator } from "../lib/types/engine";
 
@@ -59,12 +59,16 @@ export default function SnapshotResults({ snapshot, recommendations, onContinue 
               Business Snapshot
             </h2>
             
-            {snapshot.isFallback && (
-              <div className="max-w-2xl mx-auto mt-6 bg-slate-50 border-2 border-slate-100 rounded-2xl p-6">
-                <p className="text-slate-600 font-bold">
-                  No public information was found for this business.
+            {snapshot.demoMode && (
+              <div className="max-w-2xl mx-auto mt-6 bg-amber-50 border-2 border-amber-100 rounded-2xl p-6">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <ShieldAlert className="h-5 w-5 text-amber-600" />
+                  <span className="text-amber-800 font-black uppercase tracking-widest text-sm">Demo Mode</span>
+                </div>
+                <p className="text-amber-700 font-bold">
+                  Sample Business Analysis
                   <br/>
-                  You can still continue with a manual consultation.
+                  <span className="text-sm font-medium opacity-80 mt-1 block">We couldn't retrieve public data, so we're displaying an example analysis.</span>
                 </p>
               </div>
             )}

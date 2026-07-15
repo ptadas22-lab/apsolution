@@ -9,6 +9,7 @@ import Recommendations from "./components/Recommendations";
 import ContactSection from "./components/ContactSection";
 import LatestInsights from "./components/LatestInsights";
 import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 import { RecommendationEngine } from "./lib/engine/recommendationEngine";
 import { RecommendationChain, WorkflowScenario } from "./lib/types/engine";
@@ -41,18 +42,19 @@ export default function App() {
       console.log("[App] API data null or invalid, generating default fallback snapshot");
       validData = {
         snapshot: {
-          businessName: "Your Business",
-          category: "generic",
-          location: "Location",
-          googleRating: "Not Found",
-          reviewCount: "Not Found",
-          websiteFound: "Not Found",
-          instagramFound: "Not Found",
+          businessName: "Beluga Salon",
+          category: "salon",
+          location: "Local Area",
+          googleRating: "4.6",
+          reviewCount: "128",
+          websiteFound: "Found",
+          instagramFound: "Found",
           facebookFound: "Not Found",
           onlineBooking: "Not Found",
           whatsApp: "Not Found",
-          businessHours: "Not Found",
-          isFallback: true
+          businessHours: "Found",
+          isFallback: true,
+          demoMode: true
         },
         observations: []
       };
@@ -135,33 +137,35 @@ export default function App() {
             ) : (
               <>
                 {/* If analysis is complete, render the consultative journey */}
-                {/* Phase 4, 5, 6 */}
-                <SnapshotResults 
-                  snapshot={snapshot} 
-                  recommendations={recommendations} 
-                  onContinue={() => handleScrollToSection("workflow-comparison")}
-                />
+                <ErrorBoundary>
+                  {/* Phase 4, 5, 6 */}
+                  <SnapshotResults 
+                    snapshot={snapshot} 
+                    recommendations={recommendations} 
+                    onContinue={() => handleScrollToSection("workflow-comparison")}
+                  />
 
-                {/* Phase 7 */}
-                <WorkflowComparison workflows={workflows} />
+                  {/* Phase 7 */}
+                  <WorkflowComparison workflows={workflows} />
 
-                {/* Phase 8 */}
-                <ImagineBusiness onScrollToSection={handleScrollToSection} />
+                  {/* Phase 8 */}
+                  <ImagineBusiness onScrollToSection={handleScrollToSection} />
 
-                {/* Phase 9 */}
-                <Recommendations recommendations={recommendations} />
+                  {/* Phase 9 */}
+                  <Recommendations recommendations={recommendations} />
 
-                {/* Phase 10 */}
-                <ContactSection recommendations={recommendations} />
-                
-                <div className="bg-white py-12 flex justify-center border-t border-slate-100">
-                  <button
-                    onClick={resetJourney}
-                    className="text-sm font-bold text-slate-400 hover:text-[#0B1F3A] underline-offset-4 hover:underline transition-all cursor-pointer bg-transparent border-none"
-                  >
-                    Start A New Analysis
-                  </button>
-                </div>
+                  {/* Phase 10 */}
+                  <ContactSection recommendations={recommendations} />
+                  
+                  <div className="bg-white py-12 flex justify-center border-t border-slate-100">
+                    <button
+                      onClick={resetJourney}
+                      className="text-sm font-bold text-slate-400 hover:text-[#0B1F3A] underline-offset-4 hover:underline transition-all cursor-pointer bg-transparent border-none"
+                    >
+                      Start A New Analysis
+                    </button>
+                  </div>
+                </ErrorBoundary>
               </>
             )}
           </>

@@ -88,18 +88,19 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
       // Generate fallback data to ensure the journey continues
       const fallbackData = {
         snapshot: {
-          businessName: formData.businessName,
-          category: formData.category,
-          location: formData.location,
-          googleRating: "Not Found",
-          reviewCount: "Not Found",
-          websiteFound: "Not Found",
-          instagramFound: "Not Found",
+          businessName: formData.businessName || "Beluga Salon",
+          category: formData.category || "salon",
+          location: formData.location || "Local Area",
+          googleRating: "4.6",
+          reviewCount: "128",
+          websiteFound: "Found",
+          instagramFound: "Found",
           facebookFound: "Not Found",
           onlineBooking: "Not Found",
           whatsApp: "Not Found",
-          businessHours: "Not Found",
-          isFallback: true
+          businessHours: "Found",
+          isFallback: true,
+          demoMode: true
         }
       };
 
