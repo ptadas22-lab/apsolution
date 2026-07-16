@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import InteractiveSnapshot from "./components/InteractiveSnapshot";
 import SnapshotResults from "./components/SnapshotResults";
 import WorkflowComparison from "./components/WorkflowComparison";
+import ChallengesSection from "./components/ChallengesSection";
 import ImagineBusiness from "./components/ImagineBusiness";
 import Recommendations from "./components/Recommendations";
 import ContactSection from "./components/ContactSection";
@@ -22,6 +23,8 @@ export default function App() {
   const [snapshot, setSnapshot] = useState<any>(null);
   const [recommendations, setRecommendations] = useState<RecommendationChain[]>([]);
   const [workflows, setWorkflows] = useState<WorkflowScenario[]>([]);
+  const [challenges, setChallenges] = useState<string[]>([]);
+  const [dashboardWidgets, setDashboardWidgets] = useState<any[]>([]);
 
   const handleScrollToSection = (sectionId: string) => {
     if (currentView !== "home") setCurrentView("home");
@@ -36,14 +39,13 @@ export default function App() {
   const handleSnapshotComplete = async (apiData: any) => {
     console.log("[App] Research completed");
 
-    // 1. Ensure we have valid data. If null/undefined, create fallback.
     let validData = apiData;
     if (!validData || !validData.snapshot) {
       console.log("[App] API data null or invalid, generating default fallback snapshot");
       validData = {
         snapshot: {
-          businessName: "Beluga Salon",
-          category: "salon",
+          businessName: "Example Business",
+          category: "other",
           location: "Local Area",
           googleRating: "4.6",
           reviewCount: "128",
@@ -61,25 +63,22 @@ export default function App() {
     }
 
     try {
-      // 2. Process Business Logic
       const engine = new RecommendationEngine();
       let chain = await engine.analyze(validData);
       
-      // 3. Fetch Example Data from Profile
       const profile = getIndustryProfile(validData.snapshot.category || "generic");
       
-      // Safety net: ensure chain is never empty
       if (!chain || chain.length === 0) {
         chain = profile.generateChain(validData.snapshot, []);
       }
       
-      // 4. Set State
       console.log("[App] Snapshot created");
       setSnapshot(validData.snapshot);
       setRecommendations(chain);
       setWorkflows(profile.workflowComparisons);
+      setChallenges(profile.challenges || []);
+      setDashboardWidgets(profile.dashboardWidgets || []);
 
-      // 5. Scroll to results
       setTimeout(() => {
         console.log("[App] Snapshot rendered");
         document.getElementById("snapshot-results")?.scrollIntoView({ 
@@ -89,7 +88,6 @@ export default function App() {
       }, 100);
     } catch (error) {
       console.error("[App] Failed to process snapshot logic:", error);
-      // Even if logic fails, force render with empty values so user journey doesn't stop
       console.log("[App] Snapshot created (emergency fallback)");
       setSnapshot(validData.snapshot);
       setRecommendations([]);
@@ -104,6 +102,8 @@ export default function App() {
     setSnapshot(null);
     setRecommendations([]);
     setWorkflows([]);
+    setChallenges([]);
+    setDashboardWidgets([]);
     handleScrollToSection("discovery");
   };
 
@@ -132,25 +132,26 @@ export default function App() {
             {!snapshot ? (
               <>
                 <Hero onScrollToSection={handleScrollToSection} />
-                {/* Phase 2 & 3: Discovery & AI Research */}
                 <InteractiveSnapshot onComplete={handleSnapshotComplete} />
               </>
             ) : (
               <>
-                {/* If analysis is complete, render the consultative journey */}
                 <ErrorBoundary>
-                  {/* Phase 4, 5, 6 */}
+                  
                   <SnapshotResults 
                     snapshot={snapshot} 
                     recommendations={recommendations} 
-                    onContinue={() => handleScrollToSection("workflow-comparison")}
+                    onContinue={() => handleScrollToSection("challenges")}
                   />
 
-                  {/* Phase 7 */}
+                  <ChallengesSection challenges={challenges} />
+
                   <WorkflowComparison workflows={workflows} />
 
-                  {/* Phase 8 */}
-                  <ImagineBusiness onScrollToSection={handleScrollToSection} />
+                  <ImagineBusiness 
+                    onScrollToSection={handleScrollToSection} 
+                    dashboardWidgets={dashboardWidgets} 
+                  />
 
                   {/* Phase 9 */}
                   <Recommendations recommendations={recommendations} />

@@ -1,5 +1,5 @@
 import { IAnalysisEngine, RecommendationChain } from "../types/engine";
-import { getIndustryProfile } from "../data/industryProfiles";
+import { getIndustryProfile } from "../businessProfiles";
 
 export class RecommendationEngine implements IAnalysisEngine {
   async analyze(businessData: any): Promise<RecommendationChain[]> {

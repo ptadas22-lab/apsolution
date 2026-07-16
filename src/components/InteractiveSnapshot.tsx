@@ -5,6 +5,17 @@ interface InteractiveSnapshotProps {
   onComplete: (data: any) => void;
 }
 
+const industries = [
+  { id: "salon", label: "Salon & Spa" },
+  { id: "restaurant", label: "Restaurant & Cafe" },
+  { id: "clinic", label: "Medical Clinic" },
+  { id: "gym", label: "Gym & Fitness" },
+  { id: "retail", label: "Retail & E-commerce" },
+  { id: "manufacturing", label: "Manufacturing" },
+  { id: "professional", label: "Professional Services" },
+  { id: "other", label: "Other" }
+];
+
 export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotProps) {
   const [isSearching, setIsSearching] = useState(false);
   const [activeResearchIndex, setActiveResearchIndex] = useState(0);
@@ -15,16 +26,6 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
     businessName: "",
     location: ""
   });
-
-  const industries = [
-    { id: "salon", label: "Salon & Spa" },
-    { id: "restaurant", label: "Restaurant & Cafe" },
-    { id: "clinic", label: "Clinic & Healthcare" },
-    { id: "retail", label: "Retail Store" },
-    { id: "gym", label: "Gym & Fitness" },
-    { id: "manufacturing", label: "Manufacturing" },
-    { id: "other", label: "Other" }
-  ];
 
   const researchTasks = [
     "Researching Google Business Profile",
