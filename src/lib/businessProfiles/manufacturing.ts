@@ -86,42 +86,39 @@ export const manufacturingProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.websiteFound) === "Not Found") {
-      chain.push({
-        observation: "Digital catalog or supplier portal not detected.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "B2B clients often expect a digital interface to check order status or product specifications.",
-        possibleImprovement: "B2B Visibility",
-        exampleSolution: "Client Order Tracking Portal",
-        consultationQuestion: "How do your clients currently check the status of their orders?"
-      });
-    }
 
-    if (determineStatus(snapshot.whatsApp) === "Good" || determineStatus(snapshot.whatsApp) === "Available") {
-      chain.push({
-        observation: "Supplier/client communication utilizes WhatsApp.",
-        confidence: "Medium",
-        source: "WhatsApp Business",
-        reasoning: "Ad-hoc messaging for critical order updates can lead to miscommunication or delays.",
-        possibleImprovement: "Communication Centralization",
-        exampleSolution: "Automated Status Notifications",
-        consultationQuestion: "How much time is spent answering calls about order status?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic public profile detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Manufacturing operations generate significant data that is difficult to track on paper.",
-        possibleImprovement: "Operational Tracking",
-        exampleSolution: "Digital Production Dashboard",
-        consultationQuestion: "How do you track inventory on the shop floor?"
-      });
-    }
+    chain.push({
+      observation: "Client order tracking and supplier portals may not be digitized.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "B2B clients often expect a digital interface to check order status without calling the office.",
+      possibleImprovement: "B2B Visibility",
+      exampleSolution: "Client Order Tracking Portal",
+      consultationQuestion: "How do your clients currently check the status of their orders?"
+    });
+    chain.push({
+      observation: "Production tracking and inventory updates may involve manual data entry.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Manufacturing operations generate significant data that can be difficult to track efficiently on paper.",
+      possibleImprovement: "Operational Tracking",
+      exampleSolution: "Digital Production Dashboard",
+      consultationQuestion: "How do you track inventory on the shop floor?"
+    });
+    chain.push({
+      observation: "Supplier communication may rely heavily on ad-hoc messaging.",
+      confidence: "Medium", source: "WhatsApp Business",
+      reasoning: "Ad-hoc messaging for critical order updates can occasionally lead to miscommunication or delays.",
+      possibleImprovement: "Communication Centralization",
+      exampleSolution: "Automated Status Notifications",
+      consultationQuestion: "How much time is spent answering calls about order status?"
+    });
+    chain.push({
+      observation: "Quality control and dispatch logs may be scattered.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Centralizing quality reports can help identify bottlenecks in the production line.",
+      possibleImprovement: "Quality Management",
+      exampleSolution: "Unified QC Database",
+      consultationQuestion: "How are your quality control checks recorded?"
+    });
 
     return chain;
   }

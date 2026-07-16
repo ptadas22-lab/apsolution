@@ -88,42 +88,39 @@ export const clinicProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.onlineBooking) === "Not Found") {
-      chain.push({
-        observation: "Appointment requests appear to be managed manually.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "Medical practices often struggle with phone congestion when patients call to book or reschedule.",
-        possibleImprovement: "Patient Scheduling",
-        exampleSolution: "Secure Online Booking Portal",
-        consultationQuestion: "Does your reception spend significant time managing phone appointments?"
-      });
-    }
 
-    if (determineStatus(snapshot.googleRating) === "Available" || determineStatus(snapshot.googleRating) === "Good") {
-      chain.push({
-        observation: `Patient reviews are visible (Rating: ${snapshot.googleRating}).`,
-        confidence: "Medium",
-        source: "Google Business Profile",
-        reasoning: "Consistent, positive reviews build trust for medical practices, but collecting them manually is difficult.",
-        possibleImprovement: "Reputation Management",
-        exampleSolution: "Automated Post-Visit Feedback",
-        consultationQuestion: "Do you have a system for collecting patient feedback?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic online presence detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Consolidating patient communications can significantly reduce administrative burden.",
-        possibleImprovement: "Practice Management",
-        exampleSolution: "Unified Clinic Dashboard",
-        consultationQuestion: "How do you manage patient follow-ups?"
-      });
-    }
+    chain.push({
+      observation: "Patient appointments often involve phone-based scheduling.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "Medical practices may struggle with phone congestion when patients call to book or reschedule.",
+      possibleImprovement: "Patient Scheduling",
+      exampleSolution: "Secure Online Booking Portal",
+      consultationQuestion: "Does your reception spend significant time managing phone appointments?"
+    });
+    chain.push({
+      observation: "Patient follow-ups and checkups may be tracked manually.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Automated reminders can help reduce missed appointments and improve patient care continuity.",
+      possibleImprovement: "Automated Follow-ups",
+      exampleSolution: "Patient Communication Dashboard",
+      consultationQuestion: "How do you manage patient follow-ups?"
+    });
+    chain.push({
+      observation: "Patient reviews are visible but may require active management.",
+      confidence: "High", source: "Google Business Profile",
+      reasoning: "Consistent, positive reviews can build trust, but collecting them manually is often difficult.",
+      possibleImprovement: "Reputation Management",
+      exampleSolution: "Automated Post-Visit Feedback",
+      consultationQuestion: "Do you have a system for collecting patient feedback?"
+    });
+    chain.push({
+      observation: "New patient intake processes may still rely on paper forms.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Digitizing intake forms can save administrative time and improve record accuracy.",
+      possibleImprovement: "Digital Onboarding",
+      exampleSolution: "Secure Digital Intake Forms",
+      consultationQuestion: "How do new patients currently register?"
+    });
 
     return chain;
   }

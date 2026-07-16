@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import InteractiveSnapshot from "./components/InteractiveSnapshot";
 import SnapshotResults from "./components/SnapshotResults";
 import EstimatedBusinessPotential from "./components/EstimatedBusinessPotential";
+import BusinessOpportunityAnalysis from "./components/BusinessOpportunityAnalysis";
 import WorkflowComparison from "./components/WorkflowComparison";
 import ChallengesSection from "./components/ChallengesSection";
 import ImagineBusiness from "./components/ImagineBusiness";
@@ -146,8 +147,10 @@ export default function App() {
 
                   <EstimatedBusinessPotential 
                     snapshot={snapshot}
-                    onContinue={() => handleScrollToSection("challenges")}
+                    onContinue={() => handleScrollToSection("business-opportunities")}
                   />
+
+                  <BusinessOpportunityAnalysis recommendations={recommendations} />
 
                   <ChallengesSection challenges={challenges} />
 

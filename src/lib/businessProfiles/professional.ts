@@ -88,42 +88,39 @@ export const professionalProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.onlineBooking) === "Not Found") {
-      chain.push({
-        observation: "Consultation booking appears to rely on email or phone.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "Professional firms lose billable time when scheduling requires back-and-forth communication.",
-        possibleImprovement: "Automated Scheduling",
-        exampleSolution: "Client Booking Calendar",
-        consultationQuestion: "How much time is spent scheduling client consultations?"
-      });
-    }
 
-    if (determineStatus(snapshot.websiteFound) === "Available" || determineStatus(snapshot.websiteFound) === "Good") {
-      chain.push({
-        observation: "Firm website is active.",
-        confidence: "Medium",
-        source: "Official Website",
-        reasoning: "A firm's website can serve as an active lead generation tool if a client intake system is integrated.",
-        possibleImprovement: "Lead Capture",
-        exampleSolution: "Digital Intake Forms",
-        consultationQuestion: "How do you capture details from prospective clients?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic professional profile detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Organizing client data and billing in one system ensures compliance and prevents missed invoices.",
-        possibleImprovement: "Practice Management",
-        exampleSolution: "Unified Client Dashboard",
-        consultationQuestion: "How do you track project deliverables and billing?"
-      });
-    }
+    chain.push({
+      observation: "Consultation scheduling appears to rely on back-and-forth communication.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "Professional firms may lose billable time when scheduling requires extensive email coordination.",
+      possibleImprovement: "Automated Scheduling",
+      exampleSolution: "Client Booking Calendar",
+      consultationQuestion: "How much time is spent scheduling client consultations?"
+    });
+    chain.push({
+      observation: "Client onboarding and document collection may be handled manually.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Firms like yours often find that digital intake portals can speed up the onboarding process.",
+      possibleImprovement: "Client Onboarding",
+      exampleSolution: "Secure Document Portal",
+      consultationQuestion: "How do you collect sensitive documents from clients?"
+    });
+    chain.push({
+      observation: "Firm website is active but may lack integrated lead capture.",
+      confidence: "Medium", source: "Official Website",
+      reasoning: "A firm's website can serve as an active lead generation tool if a client intake system is integrated.",
+      possibleImprovement: "Lead Capture",
+      exampleSolution: "Digital Intake Forms",
+      consultationQuestion: "How do you capture details from prospective clients?"
+    });
+    chain.push({
+      observation: "Project deliverables and billable hours may be tracked in spreadsheets.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Organizing client data and billing in one system can help ensure compliance and prevent missed invoices.",
+      possibleImprovement: "Practice Management",
+      exampleSolution: "Unified Client Dashboard",
+      consultationQuestion: "How do you track project deliverables and billing?"
+    });
 
     return chain;
   }

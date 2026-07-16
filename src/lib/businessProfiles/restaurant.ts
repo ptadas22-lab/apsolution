@@ -86,42 +86,39 @@ export const restaurantProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.onlineBooking) === "Not Found") {
-      chain.push({
-        observation: "Direct online ordering not detected.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "Restaurants paying high third-party commissions often benefit from a direct ordering system.",
-        possibleImprovement: "Direct Ordering",
-        exampleSolution: "Custom Ordering Website",
-        consultationQuestion: "Are you paying high fees to delivery platforms?"
-      });
-    }
 
-    if (determineStatus(snapshot.instagramFound) === "Good" || determineStatus(snapshot.instagramFound) === "Available") {
-      chain.push({
-        observation: "Active Instagram presence detected.",
-        confidence: "Medium",
-        source: "Instagram",
-        reasoning: "A strong visual presence can be directly connected to a table reservation or ordering system.",
-        possibleImprovement: "Social Commerce",
-        exampleSolution: "Instagram Booking Integration",
-        consultationQuestion: "Do you receive reservation requests via social media?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic online presence detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Consolidating operations can streamline peak hour service.",
-        possibleImprovement: "Operations Management",
-        exampleSolution: "Unified POS Dashboard",
-        consultationQuestion: "How do you manage peak hour orders?"
-      });
-    }
+    chain.push({
+      observation: "Direct online ordering systems may not be fully integrated.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "Restaurants commonly rely on third-party apps, which can involve high commission fees.",
+      possibleImprovement: "Direct Ordering Integration",
+      exampleSolution: "Custom Ordering Website",
+      consultationQuestion: "Are you paying high fees to delivery platforms?"
+    });
+    chain.push({
+      observation: "Table reservations appear to be handled over the phone.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Managing bookings manually during peak hours may lead to missed calls or scheduling errors.",
+      possibleImprovement: "Digital Reservations",
+      exampleSolution: "Online Table Booking System",
+      consultationQuestion: "How do you handle peak hour reservations?"
+    });
+    chain.push({
+      observation: "Active social media presence detected without direct conversion links.",
+      confidence: "Medium", source: "Instagram",
+      reasoning: "A strong visual presence can often be directly connected to a table reservation or ordering system.",
+      possibleImprovement: "Social Commerce",
+      exampleSolution: "Instagram Booking Integration",
+      consultationQuestion: "Do you receive reservation requests via social media?"
+    });
+    chain.push({
+      observation: "Menu updates and promotions may be communicated manually.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Consolidating customer contacts can allow for automated promotion distribution during slow periods.",
+      possibleImprovement: "Customer Re-engagement",
+      exampleSolution: "Automated Campaign Manager",
+      consultationQuestion: "How do you inform past customers about new specials?"
+    });
 
     return chain;
   }

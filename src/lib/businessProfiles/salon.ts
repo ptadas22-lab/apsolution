@@ -99,54 +99,39 @@ export const salonProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.onlineBooking) === "Not Found") {
-      chain.push({
-        observation: "Online booking not detected.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "Businesses that receive frequent appointments often choose organised booking systems to reduce manual scheduling.",
-        possibleImprovement: "Online Booking",
-        exampleSolution: "Appointment Dashboard",
-        consultationQuestion: "How do you currently manage appointments?"
-      });
-    }
 
-    if (determineStatus(snapshot.whatsApp) === "Good" || determineStatus(snapshot.whatsApp) === "Available") {
-      chain.push({
-        observation: "Customer communication appears to rely on WhatsApp.",
-        confidence: "Medium",
-        source: "WhatsApp Business",
-        reasoning: "High volumes of manual messaging can be streamlined using standard automated replies.",
-        possibleImprovement: "WhatsApp Automation",
-        exampleSolution: "Automated Messaging System",
-        consultationQuestion: "How do customers usually contact you?"
-      });
-    }
-
-    if (determineStatus(snapshot.googleRating) === "Available" || determineStatus(snapshot.googleRating) === "Good") {
-      chain.push({
-        observation: `Local reputation is visible (Rating: ${snapshot.googleRating}).`,
-        confidence: "High",
-        source: "Google Business Profile",
-        reasoning: "A strong reputation can be leveraged to automatically request feedback from satisfied clients.",
-        possibleImprovement: "Review Management",
-        exampleSolution: "Feedback Collection Pipeline",
-        consultationQuestion: "Do you actively ask clients for reviews?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic online presence detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Even established businesses can consolidate their scattered public information into one system.",
-        possibleImprovement: "Customer Management",
-        exampleSolution: "Customer Dashboard",
-        consultationQuestion: "Do you keep customer history?"
-      });
-    }
+    chain.push({
+      observation: "Appointments appear to be managed manually or through basic tools.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "Manual scheduling may increase staff workload and can create booking conflicts during busy periods.",
+      possibleImprovement: "Digital Appointment Management",
+      exampleSolution: "Appointment Calendar with Automated Confirmation",
+      consultationQuestion: "How do you currently manage appointments?"
+    });
+    chain.push({
+      observation: "Customer communication often relies on direct messaging apps.",
+      confidence: "Medium", source: "WhatsApp Business",
+      reasoning: "High volumes of manual messaging commonly take time away from serving clients on the floor.",
+      possibleImprovement: "Automated Messaging",
+      exampleSolution: "Unified Inbox with Standard Replies",
+      consultationQuestion: "How do customers usually contact you?"
+    });
+    chain.push({
+      observation: "Public reviews are visible but may lack a consistent collection strategy.",
+      confidence: "High", source: "Google Business Profile",
+      reasoning: "A strong reputation can be leveraged to automatically request feedback from satisfied clients after their visit.",
+      possibleImprovement: "Review Management",
+      exampleSolution: "Post-Visit Feedback Pipeline",
+      consultationQuestion: "Do you actively ask clients for reviews?"
+    });
+    chain.push({
+      observation: "Client history is likely stored across different notebooks or basic spreadsheets.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Businesses like yours often find that centralizing client preferences can enhance the personalization of services.",
+      possibleImprovement: "Customer Management",
+      exampleSolution: "Digital Customer Profiles",
+      consultationQuestion: "Do you keep customer history?"
+    });
 
     return chain;
   }

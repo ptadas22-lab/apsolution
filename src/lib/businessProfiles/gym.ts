@@ -86,42 +86,39 @@ export const gymProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.onlineBooking) === "Not Found") {
-      chain.push({
-        observation: "Class or session booking appears to be manual.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "Fitness centers can eliminate reception bottlenecks by allowing members to self-schedule.",
-        possibleImprovement: "Member Self-Service",
-        exampleSolution: "Digital Class Booking System",
-        consultationQuestion: "How do members currently book personal training or classes?"
-      });
-    }
 
-    if (determineStatus(snapshot.instagramFound) === "Good" || determineStatus(snapshot.instagramFound) === "Available") {
-      chain.push({
-        observation: "Active Instagram presence detected.",
-        confidence: "Medium",
-        source: "Instagram",
-        reasoning: "Fitness businesses often receive membership inquiries via social media that require timely follow-up.",
-        possibleImprovement: "Lead Management",
-        exampleSolution: "Social Media Inquiry Funnel",
-        consultationQuestion: "Do you track inquiries that come through social media?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic online presence detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Managing member records and payments manually can lead to missed renewals.",
-        possibleImprovement: "Operations Management",
-        exampleSolution: "Unified Member Dashboard",
-        consultationQuestion: "How do you track when a member's plan is expiring?"
-      });
-    }
+    chain.push({
+      observation: "Class or session bookings appear to be managed manually.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "Fitness centers can often eliminate reception bottlenecks by allowing members to self-schedule.",
+      possibleImprovement: "Member Self-Service",
+      exampleSolution: "Digital Class Booking App",
+      consultationQuestion: "How do members currently book personal training or classes?"
+    });
+    chain.push({
+      observation: "Membership renewals and expirations may be tracked manually.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Managing member records manually can occasionally lead to missed renewal opportunities.",
+      possibleImprovement: "Automated Renewals",
+      exampleSolution: "Membership Tracking Dashboard",
+      consultationQuestion: "How do you track when a member's plan is expiring?"
+    });
+    chain.push({
+      observation: "Active social media presence detected with potential inquiries.",
+      confidence: "Medium", source: "Instagram",
+      reasoning: "Fitness businesses often receive membership inquiries via social media that require timely follow-up.",
+      possibleImprovement: "Lead Management",
+      exampleSolution: "Social Media Inquiry Funnel",
+      consultationQuestion: "Do you track inquiries that come through social media?"
+    });
+    chain.push({
+      observation: "Member attendance and progress tracking may be fragmented.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Centralizing attendance data can help identify members who may be losing motivation.",
+      possibleImprovement: "Member Engagement",
+      exampleSolution: "Automated Check-in System",
+      consultationQuestion: "Do you track member attendance rates?"
+    });
 
     return chain;
   }

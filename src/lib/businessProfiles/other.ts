@@ -88,42 +88,39 @@ export const genericProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.websiteFound) === "Not Found") {
-      chain.push({
-        observation: "An official website was not detected.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "A centralized digital presence is critical for establishing credibility and capturing leads automatically.",
-        possibleImprovement: "Digital Presence",
-        exampleSolution: "Centralized Business Hub",
-        consultationQuestion: "Where do you direct customers who want to learn more about your services?"
-      });
-    }
 
-    if (determineStatus(snapshot.whatsApp) === "Good" || determineStatus(snapshot.whatsApp) === "Available") {
-      chain.push({
-        observation: "Customer communication appears to utilize WhatsApp.",
-        confidence: "Medium",
-        source: "WhatsApp Business",
-        reasoning: "High volumes of direct messaging can be organized using a centralized inbox system.",
-        possibleImprovement: "Communication Management",
-        exampleSolution: "Unified Inbox",
-        consultationQuestion: "Is managing direct messages taking up a significant portion of your day?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic public information is visible.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Businesses of any type can improve efficiency by connecting scattered processes into one dashboard.",
-        possibleImprovement: "Operational Efficiency",
-        exampleSolution: "Central Dashboard",
-        consultationQuestion: "Are you using multiple different software tools to run your business?"
-      });
-    }
+    chain.push({
+      observation: "An official centralized business portal may not be fully established.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "A digital hub can help establish credibility and capture leads automatically.",
+      possibleImprovement: "Digital Presence",
+      exampleSolution: "Centralized Business Hub",
+      consultationQuestion: "Where do you direct customers who want to learn more about your services?"
+    });
+    chain.push({
+      observation: "Customer inquiries may be tracked manually across multiple platforms.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "High volumes of direct messaging can be organized more easily using a centralized inbox system.",
+      possibleImprovement: "Communication Management",
+      exampleSolution: "Unified Inbox",
+      consultationQuestion: "Is managing direct messages taking up a significant portion of your day?"
+    });
+    chain.push({
+      observation: "Routine administrative tasks appear to be handled manually.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Businesses of any type can often improve efficiency by connecting scattered processes into one dashboard.",
+      possibleImprovement: "Operational Efficiency",
+      exampleSolution: "Central Dashboard",
+      consultationQuestion: "Are you using multiple different software tools to run your business?"
+    });
+    chain.push({
+      observation: "Customer history and feedback may not be consolidated.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Centralizing customer information can help businesses identify trends and improve service delivery.",
+      possibleImprovement: "Data Centralization",
+      exampleSolution: "Unified Customer Database",
+      consultationQuestion: "How do you keep track of your most loyal customers?"
+    });
 
     return chain;
   }

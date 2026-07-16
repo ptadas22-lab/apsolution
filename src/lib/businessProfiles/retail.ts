@@ -86,42 +86,39 @@ export const retailProfile: IndustryProfile = {
   ],
   generateChain: (snapshot, observations) => {
     const chain: RecommendationChain[] = [];
-    
-    if (determineStatus(snapshot.onlineBooking) === "Not Found") {
-      chain.push({
-        observation: "Online storefront or inventory catalog not detected.",
-        confidence: "High",
-        source: "Public Directories",
-        reasoning: "Retail businesses can expand their reach by syncing their physical inventory with a digital storefront.",
-        possibleImprovement: "Digital Inventory",
-        exampleSolution: "Unified Stock Dashboard",
-        consultationQuestion: "How do you currently track your inventory levels?"
-      });
-    }
 
-    if (determineStatus(snapshot.instagramFound) === "Good" || determineStatus(snapshot.instagramFound) === "Available") {
-      chain.push({
-        observation: "Active Instagram presence detected.",
-        confidence: "Medium",
-        source: "Instagram",
-        reasoning: "Social media followers can be converted into repeat buyers if product inquiries are managed efficiently.",
-        possibleImprovement: "Social Commerce",
-        exampleSolution: "Automated Inquiry Responses",
-        consultationQuestion: "Do you receive product questions via social media?"
-      });
-    }
-
-    if (chain.length === 0) {
-      chain.push({
-        observation: "Basic online presence detected.",
-        confidence: "Low",
-        source: "General Search",
-        reasoning: "Building a database of past customers enables targeted re-engagement.",
-        possibleImprovement: "Customer Loyalty",
-        exampleSolution: "Customer Purchase History Database",
-        consultationQuestion: "Do you have a way to contact customers who have bought from you before?"
-      });
-    }
+    chain.push({
+      observation: "Online storefront or inventory catalog may not be fully synced.",
+      confidence: "High", source: "Public Directories",
+      reasoning: "Retail businesses can often expand their reach by syncing their physical inventory with a digital storefront.",
+      possibleImprovement: "Digital Inventory Integration",
+      exampleSolution: "Unified Stock Dashboard",
+      consultationQuestion: "How do you currently track your inventory levels?"
+    });
+    chain.push({
+      observation: "Past customer purchase histories may not be actively tracked.",
+      confidence: "Medium", source: "General Search",
+      reasoning: "Building a database of past customers can enable targeted re-engagement for future sales.",
+      possibleImprovement: "Customer Loyalty Tracking",
+      exampleSolution: "Purchase History Database",
+      consultationQuestion: "Do you have a way to contact customers who have bought from you before?"
+    });
+    chain.push({
+      observation: "Active social media presence detected with potential product inquiries.",
+      confidence: "Medium", source: "Instagram",
+      reasoning: "Social media followers can often be converted into repeat buyers if product inquiries are managed efficiently.",
+      possibleImprovement: "Social Commerce",
+      exampleSolution: "Automated Inquiry Responses",
+      consultationQuestion: "Do you receive product questions via social media?"
+    });
+    chain.push({
+      observation: "Sales reporting and stock alerts may be generated manually.",
+      confidence: "Low", source: "General Search",
+      reasoning: "Automated stock alerts can help prevent popular items from selling out unexpectedly.",
+      possibleImprovement: "Operations Management",
+      exampleSolution: "Real-time Sales Analytics",
+      consultationQuestion: "How do you know when to reorder stock?"
+    });
 
     return chain;
   }
