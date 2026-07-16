@@ -7,10 +7,9 @@ import { RecommendationChain, StatusIndicator } from "../lib/types/engine";
 interface SnapshotResultsProps {
   snapshot: any;
   recommendations: RecommendationChain[];
-  onContinue: () => void;
 }
 
-export default function SnapshotResults({ snapshot, recommendations, onContinue }: SnapshotResultsProps) {
+export default function SnapshotResults({ snapshot, recommendations }: SnapshotResultsProps) {
   
   // Helpers
   const isNotFound = (val: string) => !val || val === "Not Found" || val === "No";
@@ -190,16 +189,6 @@ export default function SnapshotResults({ snapshot, recommendations, onContinue 
           </div>
 
         </section>
-
-        <div className="text-center pt-8">
-          <button
-            onClick={onContinue}
-            className="bg-[#0B1F3A] hover:bg-[#2563EB] text-white font-bold text-base px-10 py-5 rounded-2xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer shadow-xl shadow-blue-900/5 border-none"
-          >
-            <span>Continue to Example Solutions</span>
-            <ArrowRight className="h-5 w-5" />
-          </button>
-        </div>
 
       </div>
     </div>
