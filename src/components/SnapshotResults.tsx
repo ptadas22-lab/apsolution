@@ -1,8 +1,11 @@
 import React from "react";
 import { 
-  Building2, MapPin, Tag, Star, Users, Globe, Instagram, Facebook, Calendar, MessageCircle, Clock, Check, Info, ShieldAlert, ArrowRight, Phone, Navigation2
+  Building2, MapPin, Tag, Star, Users, Globe, Instagram, Facebook, Calendar, MessageCircle, Clock, Check, Info, ShieldAlert, ArrowRight, Phone, Navigation2, Brain
 } from "lucide-react";
 import { RecommendationChain, StatusIndicator } from "../lib/types/engine";
+import DepthCard from "./ui3d/DepthCard";
+import FloatingContainer from "./ui3d/FloatingContainer";
+import ConnectorLine from "./ui3d/ConnectorLine";
 
 interface SnapshotResultsProps {
   snapshot: any;
@@ -66,7 +69,7 @@ export default function SnapshotResults({ snapshot, recommendations }: SnapshotR
     }
 
     return (
-      <div key={idx} className="bg-white border-2 border-slate-100 rounded-[2rem] p-6 shadow-xl shadow-[#0B1F3A]/5 hover:border-[#2563EB]/20 transition-all flex flex-col gap-5 relative overflow-hidden group">
+      <DepthCard key={idx} depth={10} className="p-6 transition-all flex flex-col gap-5 relative overflow-hidden group">
         
         {/* Status Indicator */}
         <div className="absolute top-6 right-6">
@@ -102,7 +105,7 @@ export default function SnapshotResults({ snapshot, recommendations }: SnapshotR
             Source: {item.source}
           </span>
         </div>
-      </div>
+      </DepthCard>
     );
   };
 
@@ -171,6 +174,7 @@ export default function SnapshotResults({ snapshot, recommendations }: SnapshotR
 
         {/* PHASE 6: AI BUSINESS ANALYSIS */}
         <section className="space-y-10 animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-300 fill-mode-both max-w-5xl mx-auto">
+          
           <div className="text-center space-y-4">
             <h3 className="text-3xl sm:text-4xl font-black text-[#0B1F3A] tracking-tight">
               AI Business Analysis
@@ -180,9 +184,22 @@ export default function SnapshotResults({ snapshot, recommendations }: SnapshotR
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* AI Brain Illustration */}
+          <div className="flex flex-col items-center justify-center mt-8 mb-4">
+            <FloatingContainer delay={0} yOffset={8} duration={8}>
+              <div className="relative">
+                <div className="absolute inset-0 bg-[#2563EB]/20 rounded-full blur-xl animate-pulse"></div>
+                <div className="p-5 bg-white border border-slate-100 rounded-full shadow-[0_15px_30px_rgba(11,31,58,0.1)] relative z-10">
+                  <Brain className="h-10 w-10 text-[#2563EB]" />
+                </div>
+              </div>
+            </FloatingContainer>
+            <ConnectorLine vertical length="40px" className="mt-2 bg-slate-200" glowing={false} />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
             {recommendations.map((rec, idx) => (
-              <div key={idx} className="bg-white border-2 border-slate-100 rounded-[2rem] p-8 shadow-xl shadow-[#0B1F3A]/5 hover:shadow-2xl hover:shadow-blue-900/10 transition-all flex flex-col gap-6">
+              <DepthCard key={idx} depth={10} className="p-8 transition-all flex flex-col gap-6 z-10 relative bg-white/90 backdrop-blur-sm hover:shadow-2xl hover:shadow-[#2563EB]/10 border-slate-200">
                 
                 {/* Observation Header */}
                 <div className="flex flex-col gap-3">
@@ -205,7 +222,9 @@ export default function SnapshotResults({ snapshot, recommendations }: SnapshotR
                   </div>
                 </div>
 
-                <div className="w-full h-px bg-slate-100"></div>
+                <div className="w-full h-px bg-slate-100 relative">
+                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-full bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+                </div>
 
                 {/* Reasoning */}
                 <div className="flex flex-col gap-2">
@@ -215,7 +234,7 @@ export default function SnapshotResults({ snapshot, recommendations }: SnapshotR
                   </p>
                 </div>
                 
-              </div>
+              </DepthCard>
             ))}
           </div>
 

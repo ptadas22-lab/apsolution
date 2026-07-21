@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Sparkles, ArrowRight, Check } from "lucide-react";
+import { Sparkles, ArrowRight, Check, Brain, Globe, MapPin, Star, Instagram, Facebook, Calendar } from "lucide-react";
+import FloatingClipboard from "./ui3d/FloatingClipboard";
+import FloatingContainer from "./ui3d/FloatingContainer";
+import FloatingBadge from "./ui3d/FloatingBadge";
+import ConnectorLine from "./ui3d/ConnectorLine";
 
 interface InteractiveSnapshotProps {
   onComplete: (data: any) => void;
@@ -76,17 +80,13 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
       
       const data = await response.json();
       
-      // Wait for animation to finish
       setTimeout(() => {
         onComplete(data);
       }, 8500);
 
     } catch (err: any) {
-      // 7. Only display technical errors in the browser console.
-      // Never expose internal application errors to customers.
       console.error("[AI Research] Failed to retrieve public data:", err);
       
-      // Generate fallback data to ensure the journey continues
       const fallbackData = {
         snapshot: {
           businessName: formData.businessName || "Beluga Salon",
@@ -105,7 +105,6 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
         }
       };
 
-      // Wait for animation to finish then continue
       setTimeout(() => {
         onComplete(fallbackData);
       }, 8500);
@@ -118,112 +117,130 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
     <section id="discovery" className="min-h-[75vh] flex flex-col items-center justify-center relative px-4 scroll-mt-20">
       
       {!isSearching ? (
-        <div className="max-w-2xl w-full flex flex-col gap-8 animate-in fade-in zoom-in-95 duration-500 py-12">
+        <div className="max-w-2xl w-full flex flex-col gap-12 animate-in fade-in zoom-in-95 duration-500 py-12">
           
-          {/* SECTION 2: EXPECTATION CARD */}
-          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 sm:p-10 text-left">
-            <h3 className="text-2xl font-black text-[#0B1F3A] tracking-tight mb-6">
-              What happens next?
-            </h3>
-            <ul className="space-y-4 mb-8">
-              {[
-                "Research your public business information",
-                "Prepare your Business Snapshot",
-                "Explain what we found",
-                "Show example workflows",
-                "Suggest possible improvements",
-                "Prepare discussion points"
-              ].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <div className="bg-[#2563EB]/10 p-1 rounded-full text-[#2563EB] shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 stroke-[3]" />
-                  </div>
-                  <span className="text-sm font-semibold text-slate-700">{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-slate-200">
-              <p className="text-xs font-medium text-slate-500 max-w-sm">
-                This analysis is based on publicly available information and demonstration examples.
-              </p>
-              <span className="text-xs font-bold text-[#0B1F3A] bg-white px-3 py-1.5 rounded-full border border-slate-200 whitespace-nowrap">
-                Takes &lt; 1 minute
-              </span>
-            </div>
+          {/* SECTION 3: BUSINESS DISCOVERY */}
+          <div className="text-center space-y-3 mb-4">
+             <h3 className="text-3xl font-black text-[#0B1F3A] tracking-tight">
+               Business Discovery
+             </h3>
+             <p className="text-slate-500 font-medium">
+               Tell us which business we should analyze.
+             </p>
           </div>
 
-          {/* SECTION 3: BUSINESS DISCOVERY */}
-          <form onSubmit={handleSubmit} className="bg-white border border-slate-100 rounded-3xl p-8 sm:p-10 shadow-xl shadow-blue-900/5 space-y-8 relative">
-            <div className="absolute -top-3.5 left-8 bg-[#0B1F3A] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-              Step 1 of 5
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700">Which industry are you in?</label>
-              <select 
-                value={formData.category}
-                onChange={(e) => setFormData({...formData, category: e.target.value})}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-700 font-medium focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all appearance-none"
-              >
-                <option value="" disabled>Select your industry</option>
-                {industries.map(ind => (
-                  <option key={ind.id} value={ind.id}>{ind.label}</option>
-                ))}
-              </select>
-            </div>
+          <FloatingClipboard className="w-full">
+            <form onSubmit={handleSubmit} className="p-2 space-y-6">
+              
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700">Which industry are you in?</label>
+                <select 
+                  value={formData.category}
+                  onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-700 font-medium focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all appearance-none"
+                >
+                  <option value="" disabled>Select your industry</option>
+                  {industries.map(ind => (
+                    <option key={ind.id} value={ind.id}>{ind.label}</option>
+                  ))}
+                </select>
+              </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700">What's your business name?</label>
-              <input 
-                type="text"
-                placeholder="e.g. Sameera's Family Salon"
-                value={formData.businessName}
-                onChange={(e) => setFormData({...formData, businessName: e.target.value})}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-700 font-medium focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all placeholder:text-slate-400"
-              />
-            </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700">What's your business name?</label>
+                <input 
+                  type="text"
+                  placeholder="e.g. Sameera's Family Salon"
+                  value={formData.businessName}
+                  onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-700 font-medium focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all placeholder:text-slate-400"
+                />
+              </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-slate-700">Where is your business located?</label>
-              <input 
-                type="text"
-                placeholder="e.g. Dadar, Mumbai"
-                value={formData.location}
-                onChange={(e) => setFormData({...formData, location: e.target.value})}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-700 font-medium focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all placeholder:text-slate-400"
-              />
-            </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700">Where is your business located?</label>
+                <input 
+                  type="text"
+                  placeholder="e.g. Dadar, Mumbai"
+                  value={formData.location}
+                  onChange={(e) => setFormData({...formData, location: e.target.value})}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 text-slate-700 font-medium focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all placeholder:text-slate-400"
+                />
+              </div>
 
-            {error && <p className="text-red-500 text-sm font-semibold text-center">{error}</p>}
+              {error && <p className="text-red-500 text-sm font-semibold text-center">{error}</p>}
 
-            <button
-              type="submit"
-              disabled={!isFormValid}
-              className="w-full bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-base px-8 py-5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer border-none mt-4"
-            >
-              <span>Start Business Snapshot</span>
-              <ArrowRight className="h-5 w-5" />
-            </button>
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  disabled={!isFormValid}
+                  className="w-full bg-[#0B1F3A] disabled:bg-slate-200 disabled:text-slate-400 hover:bg-[#2563EB] text-white font-bold text-base px-8 py-5 rounded-xl transition-all shadow-[0_10px_20px_rgba(11,31,58,0.2)] disabled:shadow-none flex items-center justify-center gap-2 cursor-pointer border-none"
+                >
+                  <span>Start Business Snapshot</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
+            </form>
+          </FloatingClipboard>
 
-          </form>
         </div>
       ) : (
-        <div className="max-w-lg w-full animate-in fade-in duration-700 text-center space-y-12">
+        <div className="max-w-4xl w-full animate-in fade-in duration-700 flex flex-col items-center gap-12 py-12">
           
-          <div className="space-y-4">
-            <div className="inline-flex items-center justify-center p-5 bg-blue-50 rounded-full mb-2">
-              <Sparkles className="h-8 w-8 text-[#2563EB] animate-pulse" />
-            </div>
+          <div className="text-center space-y-4">
             <h3 className="text-3xl font-black text-[#0B1F3A] tracking-tight">
               AI Research
             </h3>
-            <p className="text-slate-500 font-medium">
-              Scanning public records for {formData.businessName}...<br/>
-              <span className="text-xs text-slate-400 mt-2 block">(Estimated time: 5-10 seconds)</span>
+            <p className="text-slate-500 font-medium max-w-md mx-auto leading-relaxed">
+              Scanning public records for <span className="font-bold text-[#0B1F3A]">{formData.businessName}</span>...
             </p>
           </div>
 
-          <div className="space-y-3 max-w-sm mx-auto text-left">
+          {/* 3D AI Research Visual */}
+          <div className="relative w-full h-80 sm:h-96 flex items-center justify-center perspective-[1000px]">
+            
+            {/* Central AI Core */}
+            <div className="relative z-20 flex flex-col items-center justify-center">
+              <div className="p-6 bg-[#2563EB]/10 rounded-full shadow-[0_0_50px_rgba(37,99,235,0.4)] border border-[#2563EB]/30 animate-pulse relative">
+                <div className="absolute inset-0 bg-white/20 rounded-full blur-xl"></div>
+                <Brain className="h-12 w-12 text-[#2563EB] relative z-10" />
+              </div>
+            </div>
+
+            {/* Orbiting Sources */}
+            <FloatingContainer delay={0} yOffset={10} duration={8} className="absolute top-10 left-10 sm:left-1/4 z-10">
+               <FloatingBadge depth={20} className="text-slate-700">
+                 <Globe className="w-4 h-4 mr-2 text-[#2563EB]" /> Google
+               </FloatingBadge>
+            </FloatingContainer>
+
+            <FloatingContainer delay={1} yOffset={15} duration={10} className="absolute bottom-20 left-4 sm:left-1/5 z-10">
+               <FloatingBadge depth={30} className="text-slate-700">
+                 <MapPin className="w-4 h-4 mr-2 text-rose-500" /> Maps
+               </FloatingBadge>
+            </FloatingContainer>
+
+            <FloatingContainer delay={2} yOffset={12} duration={9} className="absolute top-1/4 right-8 sm:right-1/4 z-10">
+               <FloatingBadge depth={40} className="text-slate-700">
+                 <Instagram className="w-4 h-4 mr-2 text-pink-600" /> Instagram
+               </FloatingBadge>
+            </FloatingContainer>
+
+            <FloatingContainer delay={0.5} yOffset={18} duration={11} className="absolute bottom-1/4 right-10 sm:right-1/5 z-10">
+               <FloatingBadge depth={15} className="text-slate-700">
+                 <Star className="w-4 h-4 mr-2 text-amber-500" /> Reviews
+               </FloatingBadge>
+            </FloatingContainer>
+
+            <FloatingContainer delay={1.5} yOffset={14} duration={12} className="absolute top-8 right-1/2 translate-x-32 z-10">
+               <FloatingBadge depth={25} className="text-slate-700">
+                 <Calendar className="w-4 h-4 mr-2 text-emerald-500" /> Booking
+               </FloatingBadge>
+            </FloatingContainer>
+
+          </div>
+
+          <div className="space-y-3 max-w-sm w-full mx-auto text-left">
             {researchTasks.map((task, idx) => {
               const isCompleted = idx < activeResearchIndex;
               const isActive = idx === activeResearchIndex;
@@ -231,17 +248,17 @@ export default function InteractiveSnapshot({ onComplete }: InteractiveSnapshotP
               return (
                 <div 
                   key={idx} 
-                  className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-500 ${
-                    isActive ? "bg-blue-50 border border-blue-100 scale-105 shadow-sm" :
+                  className={`flex items-center gap-4 p-3 rounded-2xl transition-all duration-500 ${
+                    isActive ? "bg-blue-50/80 border border-blue-100 scale-[1.02] shadow-sm" :
                     isCompleted ? "bg-transparent opacity-60" : "bg-transparent opacity-30"
                   }`}
                 >
-                  <div className={`h-6 w-6 rounded-full flex items-center justify-center shrink-0 ${
+                  <div className={`h-5 w-5 rounded-full flex items-center justify-center shrink-0 ${
                     isCompleted ? "bg-emerald-500 text-white" : 
-                    isActive ? "bg-transparent border-2 border-t-[#2563EB] border-r-[#2563EB] border-b-[#2563EB] border-l-transparent animate-spin" :
+                    isActive ? "bg-transparent border-[1.5px] border-t-[#2563EB] border-r-[#2563EB] border-b-[#2563EB] border-l-transparent animate-spin" :
                     "bg-slate-200"
                   }`}>
-                    {isCompleted && <Check className="h-3.5 w-3.5 stroke-[3]" />}
+                    {isCompleted && <Check className="h-3 w-3 stroke-[3]" />}
                   </div>
                   <span className={`text-sm font-bold ${
                     isActive ? "text-[#0B1F3A]" : 
